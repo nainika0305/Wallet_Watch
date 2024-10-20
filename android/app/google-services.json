@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875111844854",
+    "project_id": "walletwatch-8f22f",
+    "storage_bucket": "walletwatch-8f22f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875111844854:android:d898397fa659067a1315d7",
+        "android_client_info": {
+          "package_name": "com.example.wallet_watch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqHiSssJCRCBo37LcUI6HrC1ifVKGHdR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
