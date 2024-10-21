@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:875111844854:android:d898397fa659067a1315d7",
+        "mobilesdk_app_id": "1:875111844854:android:585f03a95dec9a821315d7",
         "android_client_info": {
-          "package_name": "com.example.wallet_watch"
+          "package_name": "com.example.wal"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "875111844854-7tnq0madu01blo49aoarit0r5a0t5139.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCqHiSssJCRCBo37LcUI6HrC1ifVKGHdR4"
@@ -20,7 +25,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875111844854-7tnq0madu01blo49aoarit0r5a0t5139.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "875111844854-ccto82e0v0n4r23qtcdq82lraed0kap7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.walletWatch"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875111844854:android:d898397fa659067a1315d7",
+        "android_client_info": {
+          "package_name": "com.example.wallet_watch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875111844854-afjoilc6p9lttpvbccug1l4vbrfk726p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wallet_watch",
+            "certificate_hash": "d71fc2893d8745594432efa09d983797f6599624"
+          }
+        },
+        {
+          "client_id": "875111844854-7tnq0madu01blo49aoarit0r5a0t5139.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqHiSssJCRCBo37LcUI6HrC1ifVKGHdR4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875111844854-7tnq0madu01blo49aoarit0r5a0t5139.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "875111844854-ccto82e0v0n4r23qtcdq82lraed0kap7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.walletWatch"
+              }
+            }
+          ]
         }
       }
     }
