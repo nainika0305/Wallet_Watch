@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wallet_watch/authenticate.dart';
+import 'package:wallet_watch/auth/authenticate.dart';
 //import 'package:wallet_watch/hi.dart';
 
 class Wrapper extends StatelessWidget {
