@@ -20,10 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Hi Page',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Wrapper(),
+
+      home: HiPage(),
+
     );
   }
 }
