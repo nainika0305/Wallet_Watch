@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wallet_watch/login_page.dart';
+import 'package:wallet_watch/wrapper.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -23,7 +24,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+
       home: HiPage(),
+
     );
   }
 }
