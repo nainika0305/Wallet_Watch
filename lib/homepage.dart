@@ -19,7 +19,7 @@ class _HomepageState extends State<Homepage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('signed in as ' + user.email!),
+            Text('Hello ! signed in as  ' + user.email!),
             MaterialButton(onPressed: (){
               FirebaseAuth.instance.signOut();
             },
