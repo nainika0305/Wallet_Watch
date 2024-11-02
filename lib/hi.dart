@@ -5,7 +5,8 @@ class HiPage extends StatefulWidget {
   _HiPageState createState() => _HiPageState();
 }
 
-class _HiPageState extends State<HiPage> {
+class _HiPageState extends State<HiPage>
+{
   // List of currencies for the dropdown
   final List<String> currencies = ['USD', 'EUR', 'INR', 'JPY', 'GBP'];
   // Variable to store the selected currency
@@ -25,7 +26,7 @@ class _HiPageState extends State<HiPage> {
           children: [
             // Display the quotation
             Text(
-              '"The only limit to our realization of tomorrow is our doubts of today."',
+              'Your wallet deserves the best — track it right',
               style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
             ),
@@ -53,6 +54,13 @@ class _HiPageState extends State<HiPage> {
                 'Selected Currency: $selectedCurrency',
                 style: TextStyle(fontSize: 18),
               ),
+            SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () {
+              Navigator.pushNamed(context, '/terms'); // Navigate to terms page
+              },
+              child: Text('Next'),
+            ),
           ],
         ),
       ),
