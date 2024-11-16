@@ -19,10 +19,11 @@ void main() async {
   runApp(const MyApp());
 }
 
+
 final Map<String, WidgetBuilder> appRoutes = {
   '/start': (context) => HiPage(),
   '/terms': (context) => TermsAndConditions(),
-  '/login': (context) => LoginPage(),
+  '/login': (context) => LoginPage(showRegisterPage: () {  },),
   '/home': (context) => Homepage(),
   '/wrapper': (context) => MainPage(),
   '/tips': (context) => Tips(),
