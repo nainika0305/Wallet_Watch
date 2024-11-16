@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wallet_watch/PageNotFound.dart';
+import 'package:wallet_watch/Tips.dart';
+import 'package:wallet_watch/Transactions.dart';
+import 'package:wallet_watch/homepage.dart';
 import 'package:wallet_watch/login_page.dart';
+import 'package:wallet_watch/hi.dart';
+import 'package:wallet_watch/privacypolicy.dart';
 import 'package:wallet_watch/wrapper.dart';
 import 'firebase_options.dart';
 
@@ -13,18 +19,18 @@ void main() async {
   runApp(const MyApp());
 }
 
-<<<<<<< Updated upstream
-=======
+
 final Map<String, WidgetBuilder> appRoutes = {
   '/start': (context) => HiPage(),
   '/terms': (context) => TermsAndConditions(),
   '/login': (context) => LoginPage(showRegisterPage: () {  },),
   '/home': (context) => Homepage(),
   '/wrapper': (context) => MainPage(),
+  '/tips': (context) => Tips(),
+  '/transactions' : (context) => Transactions(),
 };
 
 
->>>>>>> Stashed changes
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -36,9 +42,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
       home: HiPage(),
-
+      routes: appRoutes,
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute(builder: (context) => NotFound());
+      },
     );
   }
 }

@@ -11,14 +11,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+
   //controllers
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  Future signIn() async {
+  Future signIn() async{
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
     );
   }
 
@@ -29,24 +30,24 @@ class LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
     super.dispose();
   }
-  @override
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
             child: Center(
-<<<<<<< Updated upstream
-                child: Column(
-                    children:                    [
-          const SizedBox(height: 50),
-          //logo
-          const Icon(
-            Icons.android,
-            size: 100,
-          ),
-          const SizedBox(height: 25),
 
-          // Hello again!
+                child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      //logo
+                     const Icon(
+                        Icons.android,
+                        size: 100,
+                      ),
+                  const SizedBox(height: 25),
+
+                      // Hello again!
           const Text('Hello Again!',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -54,14 +55,12 @@ class LoginPageState extends State<LoginPage> {
               )),
           const SizedBox(height: 10),
 
-          const Text(
-            'Welcome back',
+                  const Text('Welcome back',
             style: TextStyle(
               fontSize: 20,
             ),
           ),
           const SizedBox(height: 20),
-
           // email Textfield
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -74,11 +73,11 @@ class LoginPageState extends State<LoginPage> {
               child: Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: TextField(
-                  controller: _emailController, //get input that user inputs
+                  controller: _emailController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Email',
-=======
+
                 child: SingleChildScrollView(
                   child: Column(
                       children: [
@@ -121,33 +120,6 @@ class LoginPageState extends State<LoginPage> {
                       border: InputBorder.none,
                       hintText: 'Email',
                     ),
->>>>>>> Stashed changes
-                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                  
-                            // password textfield
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.circular(12),
-                                ), // BoxDecoration
-                                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Password',
-                    ),
-                  ),
-<<<<<<< Updated upstream
                 ),
               ),
             ),
@@ -156,18 +128,20 @@ class LoginPageState extends State<LoginPage> {
 
           //sign in button
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: GestureDetector(
               onTap: signIn,
-              child: Container(
+
+            child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.deepPurple,
                 borderRadius: BorderRadius.circular(12),
-              ), // BoxDecoration
+              ),
+
               child: const Center(
                 child: Text(
-                  'Sign In',
+                  'Log In',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -178,8 +152,9 @@ class LoginPageState extends State<LoginPage> {
             ),
           ),
           ),
-              const SizedBox(height: 10),
+          const SizedBox(height: 10),
           // not a member? register now
+
 
           const Text('Not a member? Register Now!'),
         ],
@@ -187,7 +162,7 @@ class LoginPageState extends State<LoginPage> {
         ),
     ),
     );
-=======
+
                                 ),
                               ),
                             ),
@@ -241,6 +216,6 @@ class LoginPageState extends State<LoginPage> {
                         ),
                           ]),
                 ))));
->>>>>>> Stashed changes
+
   }
 }
