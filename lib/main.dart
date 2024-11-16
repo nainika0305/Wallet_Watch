@@ -13,6 +13,18 @@ void main() async {
   runApp(const MyApp());
 }
 
+<<<<<<< Updated upstream
+=======
+final Map<String, WidgetBuilder> appRoutes = {
+  '/start': (context) => HiPage(),
+  '/terms': (context) => TermsAndConditions(),
+  '/login': (context) => LoginPage(showRegisterPage: () {  },),
+  '/home': (context) => Homepage(),
+  '/wrapper': (context) => MainPage(),
+};
+
+
+>>>>>>> Stashed changes
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
