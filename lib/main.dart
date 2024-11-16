@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wallet_watch/PageNotFound.dart';
+import 'package:wallet_watch/Tips.dart';
+import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/homepage.dart';
 import 'package:wallet_watch/login_page.dart';
 import 'package:wallet_watch/hi.dart';
@@ -23,6 +25,8 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/login': (context) => LoginPage(),
   '/home': (context) => Homepage(),
   '/wrapper': (context) => MainPage(),
+  '/tips': (context) => Tips(),
+  '/transactions' : (context) => Transactions(),
 };
 
 

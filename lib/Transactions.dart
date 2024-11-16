@@ -11,10 +11,10 @@ class _TransactionsState extends State<Transactions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: Padding(
-         padding: EdgeInsets.all(16),
-        child: Text('transaction page')
-    ),
+      appBar: AppBar(
+          title: const Text('transaction'), automaticallyImplyLeading: false),
+      body: const Padding(
+          padding: EdgeInsets.all(16), child: Text('transaction page')),
     );
   }
 }
