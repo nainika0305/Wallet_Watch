@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,7 +14,21 @@ class LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  Future signIn() async{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+    );
+  }
+
   @override
+  void dispose()
+  {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
@@ -92,16 +107,20 @@ class LoginPageState extends State<LoginPage> {
 
           //sign in button
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: GestureDetector(
+              onTap: signIn,
+
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.deepPurple,
                 borderRadius: BorderRadius.circular(12),
-              ), // BoxDecoration
+              ),
+
               child: const Center(
                 child: Text(
-                  'Sign In',
+                  'Log In',
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -111,10 +130,12 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          ),
           const SizedBox(height: 10),
           // not a member? register now
 
-          const Text('Not a member? Register Now!'),
+          const Text('Not a member? Register Now!'
+              '---put link here '),
         ]))));
   }
 }
