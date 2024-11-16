@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wallet_watch/PageNotFound.dart';
+import 'package:wallet_watch/Tips.dart';
+import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/homepage.dart';
 import 'package:wallet_watch/login_page.dart';
 import 'package:wallet_watch/hi.dart';
@@ -20,11 +22,14 @@ void main() async {
 final Map<String, WidgetBuilder> appRoutes = {
   '/start': (context) => HiPage(),
   '/terms': (context) => TermsAndConditions(),
-  '/login': (context) => LoginPage(),
+  '/login': (context) => LoginPage(
+        showRegisterPage: () {},
+      ),
   '/home': (context) => Homepage(),
   '/wrapper': (context) => MainPage(),
+  '/tips': (context) => Tips(),
+  '/transactions': (context) => Transactions(),
 };
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

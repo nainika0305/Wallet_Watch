@@ -11,10 +11,10 @@ class _BudgetsState extends State<Budgets> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Text('Budgets page')
-      ),
+      appBar: AppBar(
+          title: const Text('budgets'), automaticallyImplyLeading: false),
+      body: const Padding(
+          padding: EdgeInsets.all(16), child: Text('Budgets page')),
     );
   }
 }
