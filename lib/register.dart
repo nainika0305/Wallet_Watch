@@ -60,7 +60,11 @@ class _RegisterPageState extends State<RegisterPage> {
         // Navigate to Login or Next Page
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration Successful')),
+
         );
+
+
+
       } on FirebaseAuthException catch (e) {
         // Display appropriate error messages
         String message = 'An error occurred';
