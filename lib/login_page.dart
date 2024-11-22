@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wallet_watch/forgot_password.dart';
 import 'package:wallet_watch/register.dart';
+
+
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
@@ -103,6 +106,32 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+
+                  const SizedBox(height: 20),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ForgotPasswordPage();
+                    },
+                    ),
+                    );
+                    },
+                  child: Text('Forgot Password?',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ),
+              ],
+            ),
+          ),
+
           const SizedBox(height: 20),
 
           //sign in button
@@ -131,25 +160,27 @@ class LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 10),
           // not a member? register now
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RegisterPage(
-                    showLoginPage: () {},
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Not a member?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: widget.showRegisterPage,
+                      child: Text(
+                        'Register now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ),
+                  ],
                 ),
-              );
-            },
-            child: const Text(
-              'Not a member? Register Now!',
-              style: TextStyle(
-                color: Colors.blue,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
         ]))));
   }
 }
