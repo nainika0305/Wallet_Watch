@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wallet_watch/ChangeCurrency.dart';
+import 'package:wallet_watch/CurrencyConversion.dart';
+import 'package:wallet_watch/ExportReport.dart';
+import 'package:wallet_watch/FAQs.dart';
+import 'package:wallet_watch/Feedback.dart';
 import 'package:wallet_watch/PageNotFound.dart';
+import 'package:wallet_watch/Settings.dart';
+import 'package:wallet_watch/TaxEstimationTool.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/homepage.dart';
@@ -29,6 +36,13 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/wrapper': (context) => MainPage(),
   '/tips': (context) => Tips(),
   '/transactions': (context) => Transactions(),
+  '/settings': (context) => Settings(),
+  '/feedback':(context) => review(),
+  '/changeCurrency': (context) => changeCurrency(),
+  '/report':(context) => ExportReport(),
+  '/tax':(context) => TaxEstimationTool(),
+  '/faqs':(context) => FAQs(),
+  '/conversion':(context) => CurrencyConversion(),
 };
 
 class MyApp extends StatelessWidget {
