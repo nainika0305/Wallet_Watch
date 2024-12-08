@@ -1,35 +1,52 @@
 # 💸 **Finance Tracker App - Wallet Watch**
 
 ## 🚀 **Project Overview**
-The **Wallet Watch** app is a finance tracker designed to help users monitor and manage their expenses, income, and budgets. This project is built using **Flutter** for the front-end and **Firebase** for user authentication and data storage. Currently, we are building upon the initial app structure to offer a comprehensive tool for tracking financial information in a user-friendly interface.
+The **Wallet Watch** app is a finance tracker designed to help users monitor and manage their expenses, income, and budgets. Built with **Flutter** for the front-end and **Firebase** for user authentication and data storage, this app ensures secure and seamless financial management. As of now, we’ve established a solid foundation with key features such as user authentication, transaction management, and a user-friendly dashboard.
 
 ---
 
 ## 🛠️ **Features Implemented So Far**
 1. **🔑 Authentication**
-   - **Login**: Secure email/password login using Firebase Authentication.
-   - **Register**: Allows new users to create accounts, ensuring secure registration with email validation and password strength checks.
-  
+   - **Login**: Secure login using Firebase Authentication.
+   - **Register**: New users can sign up by providing details such as Name, Email, Password, and preferred Currency.
+   - **Password Strength Check**: Password must meet specific criteria to ensure security.
+ 
 
 2. **💬 User Interface**
-   - **Hi Page**: Welcomes the user with a motivational quote and leads to the main app.
-   - **Home Page**: Displays the user's financial summary, including total available money and options to add transactions, view tips, and more.
-   - **Navigation**: Bottom navigation bar to easily switch between pages like Home, Transactions, Budgets, and Profile.
+   - **Hi Page**: A warm welcome page that displays a motivational quote and leads users to the **AuthPage**.
+   - **AuthPage**: Allows users to either log in or register. A toggle between login and registration screens ensures a smooth flow.
+   - **Home Page**: The user’s dashboard where financial summaries are displayed, including total available money, along with quick access to transactions, tips, and budget management.
 
+3. **👤 Profile Management**
+   - Profile page for managing personal details, currency preferences, and exporting reports.
 
-4. **👤 Profile Management**
-   - Profile page for viewing and managing personal details like settings, currency preferences, and exporting reports.
-
-5. **⚙️ Navigation & Settings**
-   - Bottom navigation bar provides easy access to Home, Transactions, Budgets, and Profile.
-   - Settings page with options like changing currency, exporting reports, and more.
+4. **⚙️ Navigation & Settings**
+   - **Bottom Navigation Bar**: Provides easy access to key sections like Home, Transactions, Budgets, and Profile.
+   - **Settings Page**: Includes options for currency change, exporting reports, and more.
 
 ---
 
 ## 📅 **Future Work**
-- **📊 Advanced Analytics**: Implement graphs and charts to visualize expenses, income, and budget overviews.
-- **💰 Budget Tracking**: Complete the budgeting feature to allow users to set and track their financial goals.
-- **🌍 Multi-Currency Support**: Enhance the app's functionality by adding support for multiple currencies.
-- **⚠️ Notifications**: Integrate reminders or alerts for upcoming bills or budget limits.
+- **📊 Advanced Analytics**: Implement graphs and charts for a visual representation of expenses, income, and budget overviews.
+- **💰 Budget Tracking**: Complete the budgeting feature to allow users to set, track, and visualize their financial goals.
+- **🌍 Multi-Currency Support**: Enhance functionality by supporting multiple currencies, providing global usability.
+- **⚠️ Notifications**: Introduce alerts for upcoming bills, budget limits, or transaction reminders.
+
+---
+
+## 📱 **App Flow**
+1. **Hi Page (Motivational Quote)**  
+   The journey begins with a motivational quote on the **HiPage**, welcoming the user and guiding them to the **AuthPage** for login or registration.
+
+2. **AuthPage (Login or Register)**  
+   On this screen, users can either log in to their existing account or register as a new user.  
+   - **Login:** Enter email and password to log in.  
+   - **Register:** Sign up with first name, last name, email, password, and currency preferences.
+
+3. **RegisterPage (User Registration)**  
+   When the user chooses to sign up, they are prompted to fill out their personal information. Once they submit their details, the app creates a new account, stores user information in Firebase, and redirects them to the **HomePage**.
+
+4. **HomePage (Dashboard)**  
+   Upon successful login or registration, users are taken to their **HomePage**, where they can manage their financial details, view transaction summaries, set budgets, and track progress.
 
 ---
