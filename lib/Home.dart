@@ -3,6 +3,7 @@ import 'package:wallet_watch/AddTransaction.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/bottom_nav_bar.dart';
+import 'package:wallet_watch/AddTransaction.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -96,7 +97,7 @@ class _HomeState extends State<Home> {
                       appBar: AppBar(
                         title: const Text('Add transaction'),
                       ),
-                      body: const Addtransaction(), // Render the Tips page
+                      body: const AddTransactionPage(), // Render the Tips page
                       bottomNavigationBar: MyBottomNavigationBar(
                         currentIndex: 0, // Lock the bottom nav bar on Home
                         onTap: (index) {
