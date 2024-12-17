@@ -49,7 +49,15 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     'Other',
   ];
 
-
+  // Reset form fields
+  void _resetForm() {
+    _amountController.clear();
+    _titleController.clear();
+    _noteController.clear();
+    _dateController.clear();
+    _timeController.clear();
+    _selectedDate = DateTime.now();
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -79,10 +87,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     }
   }
 
+
   Widget _buildTransactionTypeButton(String title, bool isSelected, bool isExpense) {
-
-
-
     return ElevatedButton(
       onPressed: () {
         setState(() {
@@ -107,6 +113,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     );
   }
 
+
   Widget _buildFormField({
     required TextEditingController controller,
     required String label,
@@ -128,6 +135,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +306,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Transaction added successfully')),
                       );
-                      Navigator.pop(context); // Go back to the previous screen
+                      _resetForm();
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Failed to add transaction: $e')),
