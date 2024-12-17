@@ -147,12 +147,11 @@ class _LoansState extends State<Loans> {
             ),
           ],
       ),
-      floatingActionButton: FloatingActionButton(
+       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/addLoan');
+          Navigator.pushNamed(context, '/addSubscription');
         },
         child: const Icon(Icons.add),
-        ),
       ),
     );
   }
