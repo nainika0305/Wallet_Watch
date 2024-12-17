@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'add_budget_page.dart'; // Import AddBudgetPage
 
 class Budgets extends StatefulWidget {
@@ -10,8 +11,23 @@ class Budgets extends StatefulWidget {
 }
 
 class _BudgetsState extends State<Budgets> {
+  String? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = FirebaseAuth.instance.currentUser;
+    userId = currentUser?.uid;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (userId == null) {
+      return const Center(
+        child: Text('User not logged in.'),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Budgets'),
@@ -28,7 +44,7 @@ class _BudgetsState extends State<Budgets> {
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('users')
-                    .doc('userId') // Replace with actual user ID
+                    .doc(userId)
                     .collection('budgets')
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -59,13 +75,15 @@ class _BudgetsState extends State<Budgets> {
                           children: [
                             Text(
                               budget['name'] ?? 'Unnamed Budget',
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(height: 10),
                             LinearProgressIndicator(
                               value: progress, // Dynamic progress value
                               backgroundColor: Colors.grey[300],
-                              valueColor: AlwaysStoppedAnimation<Color>(colorTag),
+                              valueColor:
+                              AlwaysStoppedAnimation<Color>(colorTag),
                               minHeight: 15, // Increased height of the progress bar
                             ),
                           ],
@@ -82,11 +100,12 @@ class _BudgetsState extends State<Budgets> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddBudgetPage()),
+                  MaterialPageRoute(builder: (context) => const AddBudgetPage()),
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                padding:
+                const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(30),
@@ -94,7 +113,7 @@ class _BudgetsState extends State<Budgets> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
                       blurRadius: 8,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
@@ -105,7 +124,10 @@ class _BudgetsState extends State<Budgets> {
                     SizedBox(width: 10),
                     Text(
                       "Add Budget",
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
