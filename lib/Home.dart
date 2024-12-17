@@ -73,7 +73,7 @@ class _HomeState extends State<Home> {
         barData.add(
           BarChartGroupData(
             x: x,
-            barRods: [BarChartRodData(toY: value, color: Colors.blue)],
+            barRods: [BarChartRodData(toY: value, color: Colors.pink[400]!)],
           ),
         );
         x++;
@@ -109,8 +109,19 @@ class _HomeState extends State<Home> {
       height: 300,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: [Colors.pink[50]!, Colors.pink[100]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.pink.withOpacity(0.2),
+            blurRadius: 25,
+            spreadRadius: 7,
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -128,15 +139,27 @@ class _HomeState extends State<Home> {
                 items: ['Income', 'Expenses', 'Combined']
                     .map((type) => DropdownMenuItem(
                   value: type,
-                  child: Text(type),
+                  child: Text(
+                    type,
+                    style: TextStyle(
+                      color: Colors.pink[300],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ))
                     .toList(),
               ),
               ElevatedButton(
                 onPressed: _pickDateRange,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink[200],
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
                 child: Text(
                   'Select Date Range',
-                  style: const TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -156,7 +179,7 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
                             value.toInt().toString(),
-                            style: const TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                         );
                       },
@@ -177,74 +200,122 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wallet Watch'),
+        title: const Text('Wallet Watch', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
         centerTitle: true,
+        backgroundColor: Colors.pink[400],
+        elevation: 12,
+        shadowColor: Colors.pink[100],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               motivationalQuote,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pink[600]),
             ),
             const SizedBox(height: 20),
+            // Total Money Section
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               decoration: BoxDecoration(
-                color: Colors.green[100],
-                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  colors: [Colors.pink[300]!, Colors.pink[400]!],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.pink.withOpacity(0.3),
+                    blurRadius: 30,
+                    spreadRadius: 8,
+                  ),
+                ],
               ),
               child: Column(
                 children: [
                   const Text(
                     "Total Money",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     "₹ ${totalMoney.toStringAsFixed(2)}",
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(
+                      fontSize: 36,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
+                      color: Colors.white,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             _buildGraph(),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Transactions()),
-                );
-              },
-              child: const Text("View All Transactions"),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Tips()),
-                );
-              },
-              child: const Text("Financial Tips"),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddTransactionPage()),
-                );
-              },
-              child: const Text("Add Transaction"),
+            const SizedBox(height: 30),
+            // Compact Buttons and Neatly Aligned
+            Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Transactions()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                    backgroundColor: Colors.pink[300],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                    elevation: 12,
+                  ),
+                  child: const Text(
+                    "View Transactions",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Tips()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                    backgroundColor: Colors.pink[200],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                    elevation: 12,
+                  ),
+                  child: const Text(
+                    "Financial Tips",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddTransactionPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                    backgroundColor: Colors.pink[100],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                    elevation: 12,
+                  ),
+                  child: const Text(
+                    "Add Transaction",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallet_watch/forgot_password.dart';
 import 'package:wallet_watch/privacypolicy.dart';
-// Import Forgot Password Page
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -13,12 +12,10 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool _isDarkMode = false; // Dark mode flag
   String _selectedFont = 'Roboto'; // Default font
-  String _selectedLanguage = 'English'; // Default language
   double _fontSize = 16.0; // Default font size
 
-  // List of available fonts and languages
+  // List of available fonts
   List<String> _fonts = ['Roboto', 'Arial', 'Times New Roman', 'Courier'];
-  List<String> _languages = ['English', 'Spanish', 'French', 'German'];
 
   @override
   Widget build(BuildContext context) {
@@ -100,29 +97,6 @@ class _SettingsState extends State<Settings> {
               ),
             ),
 
-            // Language Selection Dropdown
-            ListTile(
-              title: const Text('Language'),
-              subtitle: Text('Selected Language: $_selectedLanguage'),
-              trailing: SizedBox(
-                width: 150,
-                child: DropdownButton<String>(
-                  value: _selectedLanguage,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedLanguage = newValue!;
-                    });
-                  },
-                  items: _languages
-                      .map((language) => DropdownMenuItem(
-                    value: language,
-                    child: Text(language),
-                  ))
-                      .toList(),
-                ),
-              ),
-            ),
-
             // Privacy Policy Button
             const SizedBox(height: 30),
             ElevatedButton(
@@ -164,7 +138,6 @@ class _SettingsState extends State<Settings> {
                 setState(() {
                   _isDarkMode = false;
                   _selectedFont = 'Roboto';
-                  _selectedLanguage = 'English';
                   _fontSize = 16.0;
                 });
               },
