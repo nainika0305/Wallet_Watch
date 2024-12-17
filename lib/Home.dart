@@ -5,20 +5,26 @@ import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/AddTransaction.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
+
 class _HomeState extends State<Home> {
+  final userId = FirebaseAuth.instance.currentUser!.email; // user id
+
   String motivationalQuote = "Believe in yourself and your goals!";
   double totalMoney = 0.0;
   String selectedGraphType = "Combined";
   DateTime fromDate = DateTime.now().subtract(const Duration(days: 30));
   DateTime toDate = DateTime.now();
 
-  List<BarChartGroupData> graphData = [];
+  List<FlSpot> incomeSpots = [];
+  List<FlSpot> expenseSpots = [];
+  List<String> xAxisLabels = [];
 
   @override
   void initState() {
@@ -29,62 +35,78 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchTotalMoney() async {
     try {
-      final doc = await FirebaseFirestore.instance
+      // Listen to real-time updates for the user's totalMoney field
+      FirebaseFirestore.instance
           .collection('users')
-          .doc('userId') // Replace with dynamic user ID
-          .get();
-
-      setState(() {
-        totalMoney = doc.data()?['totalMoney'] ?? 0.0;
+          .doc(userId)
+          .snapshots()
+          .listen((docSnapshot) {
+        if (docSnapshot.exists) {
+          setState(() {
+            totalMoney = (docSnapshot.data()?['totalMoney'] ?? 0).toDouble();
+          });
+        } else {
+          print("Document does not exist");
+        }
       });
     } catch (e) {
       print("Error fetching total money: $e");
     }
   }
 
+
   Future<void> _fetchGraphData() async {
     try {
       QuerySnapshot query = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
           .collection('transactions')
-          .where('userId', isEqualTo: 'userId') // Replace with dynamic user ID
           .where('date', isGreaterThanOrEqualTo: fromDate)
           .where('date', isLessThanOrEqualTo: toDate)
           .get();
 
       List<Map<String, dynamic>> transactions = query.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
 
-      Map<String, double> groupedData = {};
+      Map<String, double> incomeData = {};
+      Map<String, double> expenseData = {};
       for (var transaction in transactions) {
         String dateKey = DateFormat('yyyy-MM-dd').format(transaction['date'].toDate());
         double amount = transaction['amount'];
 
-        if (selectedGraphType == 'Income' && transaction['type'] == 'Income') {
-          groupedData[dateKey] = (groupedData[dateKey] ?? 0) + amount;
-        } else if (selectedGraphType == 'Expenses' && transaction['type'] == 'Expense') {
-          groupedData[dateKey] = (groupedData[dateKey] ?? 0) + amount;
-        } else if (selectedGraphType == 'Combined') {
-          groupedData[dateKey] = (groupedData[dateKey] ?? 0) + amount;
+        if (transaction['type'] == 'Income') {
+          incomeData[dateKey] = (incomeData[dateKey] ?? 0) + amount;
+        } else if (transaction['type'] == 'Expense') {
+          expenseData[dateKey] = (expenseData[dateKey] ?? 0) + amount;
         }
       }
 
-      List<BarChartGroupData> barData = [];
-      int x = 0;
-      groupedData.forEach((key, value) {
-        barData.add(
-          BarChartGroupData(
-            x: x,
-            barRods: [BarChartRodData(toY: value, color: Colors.pink[400]!)],
-          ),
-        );
-        x++;
-      });
+      // Generate x-axis labels and map to FlSpot points
+      List<DateTime> allDates = [];
+      for (var i = 0; i <= toDate.difference(fromDate).inDays; i++) {
+        allDates.add(fromDate.add(Duration(days: i)));
+      }
 
-      setState(() {
-        graphData = barData;
-      });
+      xAxisLabels = allDates.map((date) => DateFormat('MM-dd').format(date)).toList();
+      incomeSpots = _generateSpots(allDates, incomeData);
+      expenseSpots = _generateSpots(allDates, expenseData);
+
+      setState(() {});
     } catch (e) {
       print("Error fetching graph data: $e");
     }
+  }
+
+  List<FlSpot> _generateSpots(List<DateTime> allDates, Map<String, double> data) {
+    return allDates
+        .asMap()
+        .entries
+        .map((entry) {
+      int index = entry.key;
+      DateTime date = entry.value;
+      String dateKey = DateFormat('yyyy-MM-dd').format(date);
+      return FlSpot(index.toDouble(), data[dateKey] ?? 0.0);
+    })
+        .toList();
   }
 
   Future<void> _pickDateRange() async {
@@ -157,37 +179,57 @@ class _HomeState extends State<Home> {
                   elevation: 8,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: Text(
+                child: const Text(
                   'Select Date Range',
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
           Expanded(
-            child: BarChart(
-              BarChartData(
+            child: LineChart(
+              LineChartData(
                 titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: true),
-                  ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      getTitlesWidget: (double value, TitleMeta meta) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            value.toInt().toString(),
-                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                        );
+                      getTitlesWidget: (value, meta) {
+                        int index = value.toInt();
+                        if (index >= 0 && index < xAxisLabels.length) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              xAxisLabels[index],
+                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
                       },
                     ),
                   ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(showTitles: true),
+                  ),
                 ),
-                barGroups: graphData,
+                gridData: FlGridData(show: true),
                 borderData: FlBorderData(show: true),
+                lineBarsData: [
+                  if (selectedGraphType == 'Combined' || selectedGraphType == 'Income')
+                    LineChartBarData(
+                      spots: incomeSpots,
+                      isCurved: true,
+                      barWidth: 3,
+                      color: Colors.green,
+                    ),
+                  if (selectedGraphType == 'Combined' || selectedGraphType == 'Expenses')
+                    LineChartBarData(
+                      spots: expenseSpots,
+                      isCurved: true,
+                      barWidth: 3,
+                      color: Colors.red,
+                    ),
+                ],
               ),
             ),
           ),
@@ -195,16 +237,11 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wallet Watch', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        backgroundColor: Colors.pink[400],
-        elevation: 12,
-        shadowColor: Colors.pink[100],
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),

@@ -31,18 +31,17 @@ class _AddLoansPageState extends State<AddLoansPage> {
         _loanTenureController.text.isNotEmpty &&
         _startDateController.text.isNotEmpty)
     {
-      final double loanAmount = double.parse(_loanAmountController.text);
       final int loanTenure = int.parse(_loanTenureController.text);
 
       final loanData = {
-        'loan title': _loanTitleController,
-        'loanAmount': loanAmount,
+        'loan title': _loanTitleController.text,
+        'loanAmount': double.parse(_loanAmountController.text),
         'interestRate': double.parse(_interestRateController.text),
         'tenure': loanTenure,
         'startDate': _selectedStartDate.toIso8601String(),
         'notes': _notesController.text,
         'amountPaid': 0.0,
-        'remainingAmount': loanAmount,
+        'remainingAmount': double.parse(_loanAmountController.text),
       };
 
       try {
@@ -51,6 +50,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
           const SnackBar(content: Text('Loan added successfully')),
         );
         _resetForm();
+        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to add loan: $e')),
