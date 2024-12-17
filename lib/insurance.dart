@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +13,9 @@ class Insurance extends StatefulWidget {
 class _InsuranceState extends State<Insurance> {
 
   // to save to database
+  final userId = FirebaseAuth.instance.currentUser!.email; //user id
+
+
   final TextEditingController _providerController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
@@ -98,7 +102,7 @@ class _InsuranceState extends State<Insurance> {
 
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('insurance').snapshots(),
+                stream: FirebaseFirestore.instance.collection('users').doc(userId).collection('insurance').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

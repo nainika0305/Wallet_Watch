@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +12,9 @@ class AddInsurancePage extends StatefulWidget {
 
 class _AddInsurancePageState extends State<AddInsurancePage> {
   // to save to database
+  final userId = FirebaseAuth.instance.currentUser!.email; //user id
+
+
   final TextEditingController _providerController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
@@ -37,12 +41,37 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
       };
 
       try {
-        await FirebaseFirestore.instance.collection('insurance').add(insuranceData);
+        await FirebaseFirestore.instance.collection('users').doc(userId).collection('insurance').add(insuranceData);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Insurance policy added successfully')),
         );
         _resetForm();
+        try {
+          // Initialize the totalMoney to 0.0
+          double totalMoney = 0.0;
+          final docRef = FirebaseFirestore.instance.collection('users').doc(userId); // DocumentReference for the user
+          final doc = await docRef.get(); // Get the document snapshot
+
+          if (doc.exists) {
+            // Fetch current totalMoney, ensuring it's a double
+            totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
+            print("Total money before update: $totalMoney");
+          } else {
+            print("Document does not exist");
+          }
+          // Parse the transaction amount and type
+          double transactionAmount = double.tryParse(insuranceData['amount'].toString()) ?? 0.0; // Safely parse to double
+
+          totalMoney -= transactionAmount;
+          // Update the totalMoney field in Firestore
+          // Update the totalMoney field in Firestore
+          await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
+
+        } catch (e) {
+          print("Error fetching total money: $e");
+        }
+
         Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

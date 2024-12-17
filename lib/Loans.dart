@@ -50,6 +50,29 @@ class _LoansState extends State<Loans> {
                   return;
                 }
 
+                // update the money u hacve paid, it is an expense
+                try {
+                  // Initialize the totalMoney to 0.0
+                  double totalMoney = 0.0;
+                  final docRef = FirebaseFirestore.instance.collection('users').doc(userId); // DocumentReference for the user
+                  final doc = await docRef.get(); // Get the document snapshot
+
+                  if (doc.exists) {
+                    // Fetch current totalMoney, ensuring it's a double
+                    totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
+                    print("Total money before update: $totalMoney");
+                  } else {
+                    print("Document does not exist");
+                  }
+                  totalMoney -= paymentAmount;
+                  // Update the totalMoney field in Firestore
+                  // Update the totalMoney field in Firestore
+                  await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
+                  print("Total money after update: $totalMoney");
+                } catch (e) {
+                  print("Error updating totalMoney: $e");
+                }
+
                 // Update Firestore with payment logic
                 final updatedAmountPaid = (loanData['amountPaid'] as double) + paymentAmount;
                 final updatedRemainingAmount =
@@ -149,7 +172,7 @@ class _LoansState extends State<Loans> {
       ),
        floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/addSubscription');
+          Navigator.pushNamed(context, '/addLoan');
         },
         child: const Icon(Icons.add),
       ),
