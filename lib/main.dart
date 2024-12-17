@@ -54,6 +54,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/Subscriptions': (context) => Subscriptions(),
   '/Loans': (context) => Loans(),
   '/insurance': (context) => Insurance(),
+
   '/addSubscription': (context) => Addsubscriptions(),
   '/addLoan': (context) => AddLoansPage(),
   '/addInsurance' : (context) => AddInsurancePage(),

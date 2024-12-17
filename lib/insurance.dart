@@ -93,7 +93,9 @@ class _InsuranceState extends State<Insurance> {
             body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            const Divider(),const Divider(),
+       
+            const Divider(),
+
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection('insurance').snapshots(),
@@ -150,9 +152,10 @@ class _InsuranceState extends State<Insurance> {
                 },
               ),
             ),
+
             ],
             ),
-      floatingActionButton: FloatingActionButton(
+           floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, '/addInsurance');
         },

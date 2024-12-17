@@ -15,7 +15,6 @@ class _LoansState extends State<Loans> {
 
   final userId = FirebaseAuth.instance.currentUser!.email; //user id
 
-
 // edit each transaton
   Future<void> _showPaymentDialog(BuildContext context, DocumentSnapshot loan) async {
     final TextEditingController paymentController = TextEditingController();
@@ -90,6 +89,7 @@ class _LoansState extends State<Loans> {
       body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
             const Divider(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -152,6 +152,7 @@ class _LoansState extends State<Loans> {
           Navigator.pushNamed(context, '/addLoan');
         },
         child: const Icon(Icons.add),
+        ),
       ),
     );
   }
