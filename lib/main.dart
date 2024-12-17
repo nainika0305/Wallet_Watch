@@ -5,12 +5,15 @@ import 'package:wallet_watch/CurrencyConversion.dart';
 import 'package:wallet_watch/ExportReport.dart';
 import 'package:wallet_watch/FAQs.dart';
 import 'package:wallet_watch/Feedback.dart';
+import 'package:wallet_watch/Loans.dart';
 import 'package:wallet_watch/PageNotFound.dart';
 import 'package:wallet_watch/Settings.dart';
+import 'package:wallet_watch/Subscriptions.dart';
 import 'package:wallet_watch/TaxEstimationTool.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/homepage.dart';
+import 'package:wallet_watch/insurance.dart';
 import 'package:wallet_watch/login_page.dart';
 import 'package:wallet_watch/hi.dart';
 import 'package:wallet_watch/privacypolicy.dart';
@@ -43,6 +46,9 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/tax':(context) => TaxEstimationTool(),
   '/faqs':(context) => FAQs(),
   '/conversion':(context) => CurrencyConversion(),
+  '/Subscriptions': (context) => Subscriptions(),
+  '/Loans': (context) => Loans(),
+  '/insurance': (context) => Insurance(),
 };
 
 class MyApp extends StatelessWidget {

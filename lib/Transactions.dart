@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_watch/AddTransaction.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+
 
 class Transactions extends StatefulWidget {
   @override
@@ -9,28 +12,39 @@ class Transactions extends StatefulWidget {
 
 class _TransactionsPageState extends State<Transactions> {
 
-  final CollectionReference _transactions =
-  FirebaseFirestore.instance.collection('transactions');
+  String? userEmail;
+  CollectionReference? _transactions;
 
+  @override
+  void initState() {
+    super.initState();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        userEmail = user.email;
+        _transactions = FirebaseFirestore.instance
+            .collection('users')
+            .doc(userEmail)
+            .collection('transactions');
+      });
+    }
+  }
 
   String _selectedFilter = 'All';
   final List<String> _filters = [
     'All',
     'Expense',
     'Income',
-    'Category',
-    'Mode',
     'Ascending Date',
-    'Amount',
-    'Loans',
-    'Investments'
-        'Others'
+    'Ascending Amount',
   ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Transactions'),
         actions: [
           IconButton(
@@ -84,7 +98,13 @@ class _TransactionsPageState extends State<Transactions> {
                           title: Text(data['title'] ?? 'No Title'),
                           subtitle: Text(
                               'Category: ${data['category'] ?? 'Unknown'} | Amount: \$${data['amount'] ?? 0}'),
-                          trailing: Text(data['date'] ?? 'No Date'),
+                          trailing: Text(
+                            data['date'] != null
+                                ? data['date'] is Timestamp
+                                ? DateFormat('yyyy-MM-dd').format((data['date'] as Timestamp).toDate())
+                                : DateFormat('yyyy-MM-dd').format(DateTime.parse(data['date']))
+                                : 'No Date',
+                          ),
                         ),
                       );
                     },
@@ -119,18 +139,21 @@ class _TransactionsPageState extends State<Transactions> {
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Manage Subscriptions Page
+                    Navigator.pushNamed(context, '/Subscriptions');
                   },
                   child: Text('Manage Subscriptions'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Insurance Page
+                    Navigator.pushNamed(context, '/insurance');
                   },
                   child: Text('Insurance'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Loans Page
+                    Navigator.pushNamed(context, '/Loans');
                   },
                   child: Text('Loans'),
                 ),
@@ -190,22 +213,20 @@ class _TransactionsPageState extends State<Transactions> {
       },
     );
   }
+  Stream<QuerySnapshot>? _getFilteredTransactions() {
+    if (_transactions == null) return null;
 
-  // Method to get filtered transactions based on selected filter
-  Stream<QuerySnapshot> _getFilteredTransactions() {
     if (_selectedFilter == 'All') {
-      return _transactions.snapshots(); // No filter, return all transactions
-    } else if (_selectedFilter == 'Category') {
-      return _transactions.where('category', isEqualTo: 'YourCategory').snapshots();
+      return _transactions!.snapshots();
     } else if (_selectedFilter == 'Income' || _selectedFilter == 'Expense') {
-      return _transactions.where('type', isEqualTo: _selectedFilter).snapshots();
+      return _transactions!.where('type', isEqualTo: _selectedFilter).snapshots();
     } else if (_selectedFilter == 'Ascending Date') {
-      return _transactions.orderBy('date', descending: false).snapshots();
+      return _transactions!.orderBy('date', descending: false).snapshots();
     } else if (_selectedFilter == 'Amount') {
-      return _transactions.orderBy('amount').snapshots();
+      return _transactions!.orderBy('amount').snapshots();
     } else {
-      // You can add more filters as needed
-      return _transactions.snapshots(); // Default if no specific filter matched
+      return _transactions!.snapshots(); // Default if no specific filter matched
     }
   }
+
 }
