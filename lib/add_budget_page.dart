@@ -13,6 +13,7 @@ class AddBudgetPage extends StatefulWidget {
 class _AddBudgetPageState extends State<AddBudgetPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _timelineController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   String? _selectedCategory;
   Color _selectedColor = Colors.blue;
@@ -47,8 +48,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
               children: [
                 _buildBudgetTypeButton('Expense Budget', isExpenseBudget, true),
                 const SizedBox(width: 16),
-                _buildBudgetTypeButton(
-                    'Savings Budget', !isExpenseBudget, false),
+                _buildBudgetTypeButton('Savings Budget', !isExpenseBudget, false),
               ],
             ),
             const SizedBox(height: 20),
@@ -67,6 +67,12 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                     controller: _timelineController,
                     label: 'Timeline (e.g., 3 months)',
                     icon: Icons.timer,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildFormField(
+                    controller: _amountController,
+                    label: 'Budget Amount',
+                    icon: Icons.attach_money,
                   ),
                   const SizedBox(height: 16),
                   _buildColorPicker(),
@@ -135,6 +141,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
         prefixIcon: Icon(icon),
         border: const OutlineInputBorder(),
       ),
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
     );
   }
 
@@ -165,8 +172,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
         });
       },
       items: _categories
-          .map((category) =>
-          DropdownMenuItem(value: category, child: Text(category)))
+          .map((category) => DropdownMenuItem(value: category, child: Text(category)))
           .toList(),
       decoration: const InputDecoration(
         labelText: 'Select Category',
@@ -208,10 +214,11 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
     final name = _nameController.text.trim();
     final timeline = _timelineController.text.trim();
     final category = _selectedCategory;
+    final amount = double.tryParse(_amountController.text.trim()) ?? 0.0;
 
-    if (name.isEmpty || timeline.isEmpty || category == null) {
+    if (name.isEmpty || timeline.isEmpty || category == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(content: Text('Please fill all fields with valid data')),
       );
       return;
     }
@@ -232,7 +239,10 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
       'category': category,
       'colorTag': _selectedColor.value.toString(),
       'progress': 0.0,
+      'amount': amount,
       'type': isExpenseBudget ? 'expense' : 'savings',
+      'spending': 0.0,  // Initialize spending for expense budgets
+      'allocation': 0.0,  // Initialize allocation for savings budgets
     };
 
     try {
