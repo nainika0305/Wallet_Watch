@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wallet_watch/AddInsurance.dart';
+import 'package:wallet_watch/AddLoans.dart';
+import 'package:wallet_watch/AddSubscriptions.dart';
 import 'package:wallet_watch/ChangeCurrency.dart';
 import 'package:wallet_watch/CurrencyConversion.dart';
 import 'package:wallet_watch/ExportReport.dart';
 import 'package:wallet_watch/FAQs.dart';
 import 'package:wallet_watch/Feedback.dart';
+import 'package:wallet_watch/Loans.dart';
 import 'package:wallet_watch/PageNotFound.dart';
 import 'package:wallet_watch/Settings.dart';
+import 'package:wallet_watch/Subscriptions.dart';
 import 'package:wallet_watch/TaxEstimationTool.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/Transactions.dart';
+import 'package:wallet_watch/auth_page.dart';
 import 'package:wallet_watch/homepage.dart';
+import 'package:wallet_watch/insurance.dart';
 import 'package:wallet_watch/login_page.dart';
 import 'package:wallet_watch/hi.dart';
 import 'package:wallet_watch/privacypolicy.dart';
@@ -27,12 +34,13 @@ void main() async {
 }
 
 final Map<String, WidgetBuilder> appRoutes = {
-  '/start': (context) => HiPage(),
+
   '/terms': (context) => TermsAndConditions(),
   '/login': (context) => LoginPage(
-        showRegisterPage: () {},
-      ),
+    showRegisterPage: () {},
+  ),
   '/home': (context) => Homepage(),
+  '/auth': (context) => AuthPage(),
   '/wrapper': (context) => MainPage(),
   '/tips': (context) => Tips(),
   '/transactions': (context) => Transactions(),
@@ -43,6 +51,13 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/tax':(context) => TaxEstimationTool(),
   '/faqs':(context) => FAQs(),
   '/conversion':(context) => CurrencyConversion(),
+  '/Subscriptions': (context) => Subscriptions(),
+  '/Loans': (context) => Loans(),
+  '/insurance': (context) => Insurance(),
+  '/addSubscription': (context) => Addsubscriptions(),
+  '/addLoan': (context) => AddLoansPage(),
+  '/addInsurance' : (context) => AddInsurancePage(),
+
 };
 
 class MyApp extends StatelessWidget {
