@@ -1,13 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wallet_watch/ChangeCurrency.dart';
-import 'package:wallet_watch/CurrencyConversion.dart';
-import 'package:wallet_watch/ExportReport.dart';
-import 'package:wallet_watch/FAQs.dart';
-import 'package:wallet_watch/Feedback.dart';
-import 'package:wallet_watch/PageNotFound.dart';
-import 'package:wallet_watch/Settings.dart';
-import 'package:wallet_watch/TaxEstimationTool.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -16,108 +9,127 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
-void _signOut() async {
-  await FirebaseAuth.instance.signOut();
-}
-
 class _ProfileState extends State<Profile> {
   final user = FirebaseAuth.instance.currentUser!;
+  String displayName = 'Loading...'; // Placeholder while data is being fetched
+  String initials = 'NN'; // Default initials if data is not fetched
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserDetails();
+  }
+
+  Future<void> fetchUserDetails() async {
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: user.email)
+          .get();
+
+      if (userDoc.docs.isNotEmpty) {
+        final data = userDoc.docs.first.data();
+        setState(() {
+          displayName = '${data['first_name']} ${data['last_name']}';
+          initials = _getInitials(displayName); // Set initials after fetching name
+        });
+      } else {
+        setState(() {
+          displayName = 'No Name Found';
+          initials = 'NN'; // Default initials if no name found
+        });
+      }
+    } catch (e) {
+      setState(() {
+        displayName = 'Error fetching name';
+        initials = 'EN'; // Default initials for error
+      });
+    }
+  }
+
+  String _getInitials(String name) {
+    List<String> nameParts = name.split(' ');
+    String firstInitial = nameParts.isNotEmpty ? nameParts[0][0] : '';
+    String secondInitial = nameParts.length > 1 ? nameParts[1][0] : '';
+    return (firstInitial + secondInitial).toUpperCase();
+  }
+
+  void _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Profile'), automaticallyImplyLeading: false),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        title: const Text('Profile'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.teal,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Profile Button for Editing
-            _buildProfileButton(context),
+            // Enhanced Profile Section
+            _buildProfileCard(context),
 
-            // Spacer for spacing out the profile button from the rest
-            SizedBox(height: 20.0),
+            const SizedBox(height: 30.0),
 
-            // List of buttons
+            // Alternating Buttons
             _buildButtonRow(
-              'Settings',
-              Colors.blueAccent,
-              Colors.pinkAccent,
-                  () {
-                // Navigate to settings page
-                    Navigator.pushNamed(context, '/settings');
-              },
+              title: 'Settings',
+              colors: [Colors.teal, Colors.greenAccent],
+              icon: Icons.settings,
               alignment: Alignment.centerLeft,
+              onTap: () {
+                Navigator.pushNamed(context, '/settings');
+              },
             ),
             _buildButtonRow(
-              'Feedback/Rate',
-              Colors.pinkAccent,
-              Colors.blueAccent,
-                  () {
-                // Navigate to feedback page
-                    Navigator.pushNamed(context, '/feedback');
-              },
+              title: 'Feedback/Rate',
+              colors: [Colors.purpleAccent, Colors.blue],
+              icon: Icons.feedback,
               alignment: Alignment.centerRight,
-            ),
-            _buildButtonRow(
-              'Change Currency',
-              Colors.blueAccent,
-              Colors.pinkAccent,
-                  () {
-                // Navigate to currency change page
-                    Navigator.pushNamed(context, '/changeCurrency');
+              onTap: () {
+                Navigator.pushNamed(context, '/feedback');
               },
+            ),
+
+            _buildButtonRow(
+              title: 'Log Out',
+              colors: [Colors.red, Colors.orange],
+              icon: Icons.logout,
               alignment: Alignment.centerLeft,
+              onTap: () {
+                _signOut();
+              },
             ),
             _buildButtonRow(
-              'Monthly CSV/Excel Export',
-              Colors.pinkAccent,
-              Colors.blueAccent,
-                  () {
-                // Navigate to export page
-                    Navigator.pushNamed(context, '/report');
-              },
+              title: 'Tax Estimation Tool',
+              colors: [Colors.deepPurple, Colors.deepPurpleAccent],
+              icon: Icons.calculate,
               alignment: Alignment.centerRight,
+              onTap: () {
+                Navigator.pushNamed(context, '/tax');
+              },
             ),
             _buildButtonRow(
-              'Log Out',
-              Colors.blueAccent,
-              Colors.pinkAccent,
-                  () {
-                _signOut(); // Sign out function
-              },
+              title: 'FAQs',
+              colors: [Colors.green, Colors.lightGreenAccent],
+              icon: Icons.question_answer,
               alignment: Alignment.centerLeft,
+              onTap: () {
+                Navigator.pushNamed(context, '/faqs');
+              },
             ),
             _buildButtonRow(
-              'Tax Estimation Tool',
-              Colors.pinkAccent,
-              Colors.blueAccent,
-                  () {
-                // Navigate to tax estimation page
-                    Navigator.pushNamed(context, '/tax');
-              },
+              title: 'Currency Conversion',
+              colors: [Colors.indigo, Colors.cyan],
+              icon: Icons.swap_horiz,
               alignment: Alignment.centerRight,
-            ),
-            _buildButtonRow(
-              'FAQs',
-              Colors.blueAccent,
-              Colors.pinkAccent,
-                  () {
-                // Navigate to FAQ page
-                    Navigator.pushNamed(context, '/faqs');
+              onTap: () {
+                Navigator.pushNamed(context, '/conversion');
               },
-              alignment: Alignment.centerLeft,
-            ),
-            _buildButtonRow(
-              'Currency Conversion',
-              Colors.pinkAccent,
-              Colors.blueAccent,
-                  () {
-                // Navigate to currency conversion page
-                    Navigator.pushNamed(context, '/conversion');
-              },
-              alignment: Alignment.centerRight,
             ),
           ],
         ),
@@ -125,44 +137,51 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-
-  Widget _buildProfileButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to profile edit page
-        //Navigator.push(
-        //context,
-        //MaterialPageRoute(builder: (context) => ProfileEditPage()), // Replace with your profile edit page
-        //);
-      },
-      child: Container(
-        width: 400,
-        height: 100.0, // Larger size
-        decoration: BoxDecoration(
-          color: Colors.green.withOpacity(0.3), // Make the button semi-transparent
-          borderRadius: BorderRadius.circular(15.0),
-        ),
+  // Enhanced Profile Card
+  Widget _buildProfileCard(BuildContext context) {
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      color: Colors.teal.shade50,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align to opposite sides
           children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0), // Padding for left side
+            // User Avatar with initials
+            CircleAvatar(
+              radius: 40.0,
+              backgroundColor: Colors.teal, // Set background color for contrast
               child: Text(
-                user.displayName ?? 'Username', // Use 'Username' if displayName is null
-                style: TextStyle(
-                  fontSize: 24.0, // Adjust font size as needed
+                initials, // Display the initials
+                style: const TextStyle(
+                  fontSize: 24.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white, // Ensure the initials are visible
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0), // Padding for right side
-              child: CircleAvatar(
-                radius: 30.0, // Size of the avatar
-                backgroundImage: NetworkImage(user.photoURL ?? 'default_image_url'), // Use default image URL if photoURL is null
-                backgroundColor: Colors.black,
-              ),
+            const SizedBox(width: 16.0),
+            // Username Display
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  displayName,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  user.email ?? 'Email not available',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -170,43 +189,58 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-
-
-
-  // Helper function for alternating buttons on different lines
-  Widget _buildButtonRow(
-      String title,
-      Color color1,
-      Color color2,
-      VoidCallback onTap, {
-        Alignment alignment = Alignment.centerLeft,
-      }) {
+  // Enhanced Button Row
+  Widget _buildButtonRow({
+    required String title,
+    required List<Color> colors,
+    required IconData icon,
+    required VoidCallback onTap,
+    required Alignment alignment,
+  }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Align(
         alignment: alignment,
         child: GestureDetector(
           onTap: onTap,
           child: Container(
-            height: 65.0,
-            width: 360, // Make sure it takes the full width
+            height: 70.0,
+            width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [color1, color2],
+                colors: colors,
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Center(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  blurRadius: 10.0,
+                  offset: const Offset(0, 5),
                 ),
-              ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Icon(icon, color: Colors.white, size: 28.0),
+                ),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+              ],
             ),
           ),
         ),
