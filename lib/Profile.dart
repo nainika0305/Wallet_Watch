@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallet_watch/goals.dart';
+import 'package:wallet_watch/meetTheTeam.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -142,6 +143,18 @@ class _ProfileState extends State<Profile> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const GoalsPage()),
+                );
+              },
+            ),
+            _buildButtonRow(
+              title: 'Meet the Team',
+              colors: [Colors.orangeAccent, Colors.deepOrange],
+              icon: Icons.flag,
+              alignment: Alignment.centerLeft,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MeetTheTeamPage()),
                 );
               },
             ),
