@@ -19,11 +19,43 @@ class LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Optionally navigate to another page after successful login
+    } on FirebaseAuthException catch (e) {
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Incorrect password.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email address.';
+      } else {
+        errorMessage = 'Please fill all required fields';
+      }
+
+      // Show the error message in a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      // Handle any other exceptions
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('An unexpected error occurred. Please try again.'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
   }
+
+
 
   @override
   void dispose() {
@@ -35,38 +67,48 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: const Color(0xFFBCB6DE), // Very light lavender background
         body: SafeArea(
+         child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFFDBE9),
+                  Color(0xFFE6D8FF), // Very light lavender
+                  Color(0xFFBDE0FE), // Very light blue
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+
+
             child: Center(
+
                 child: Column(children: [
-          const SizedBox(height: 50),
+          const SizedBox(height: 150),
           //logo
           const Icon(
-            Icons.android,
+            Icons.account_balance_wallet,
             size: 100,
+            color: Color(0xFFFDA4BA),
           ),
           const SizedBox(height: 25),
 
           // Hello again!
-          const Text('Hello Again!',
+          const Text('Welcome back!',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
+                color: Color(0xFF003366),
               )),
-          const SizedBox(height: 10),
-          const Text(
-            'Welcome back',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
           const SizedBox(height: 20),
           // email Textfield
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: const Color(0xFFFDA4BA).withOpacity(0.35),
                 border: Border.all(color: Colors.white),
                 borderRadius: BorderRadius.circular(12),
               ), // BoxDecoration
@@ -75,8 +117,10 @@ class LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: _emailController, //get input that user inputs
                   decoration: InputDecoration(
+
                     border: InputBorder.none,
                     hintText: 'Email',
+
                   ),
                 ),
               ),
@@ -89,7 +133,7 @@ class LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: const Color(0xFFFDA4BA).withOpacity(0.35),
                 border: Border.all(color: Colors.white),
                 borderRadius: BorderRadius.circular(12),
               ), // BoxDecoration
@@ -124,8 +168,10 @@ class LoginPageState extends State<LoginPage> {
                     },
                   child: Text('Forgot Password?',
                     style: TextStyle(
-                      color: Colors.blue,
+
                       fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+
                     ),),
                 ),
               ],
@@ -142,7 +188,7 @@ class LoginPageState extends State<LoginPage> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple,
+                  color: Color(0xFF73A5C6),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Center(
@@ -158,13 +204,13 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           // not a member? register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not a member?',
+                      'Not a member?  ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -174,13 +220,13 @@ class LoginPageState extends State<LoginPage> {
                       child: Text(
                         'Register now',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Colors.blueAccent,
                           fontWeight: FontWeight.bold,
                         ),
                       )
                     ),
                   ],
                 ),
-        ]))));
+        ])))));
   }
 }
