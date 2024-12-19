@@ -1,52 +1,94 @@
-# 💸 **Finance Tracker App - Wallet Watch**
+# <img src="assets/ourLogo.png" alt="Wallet Watch Logo" width="48" height="48" style="vertical-align:bottom; margin-bottom: -8px;"> <span style="line-height: 1.2;">Wallet Watch - Your Finance Tracking App</span>
 
-## 🚀 **Project Overview**
-The **Wallet Watch** app is a finance tracker designed to help users monitor and manage their expenses, income, and budgets. Built with **Flutter** for the front-end and **Firebase** for user authentication and data storage, this app ensures secure and seamless financial management. As of now, we’ve established a solid foundation with key features such as user authentication, transaction management, and a user-friendly dashboard.
 
----
 
-## 🛠️ **Features Implemented So Far**
-1. **🔑 Authentication**
-   - **Login**: Secure login using Firebase Authentication.
-   - **Register**: New users can sign up by providing details such as Name, Email, Password, and preferred Currency.
-   - **Password Strength Check**: Password must meet specific criteria to ensure security.
- 
-
-2. **💬 User Interface**
-   - **Hi Page**: A warm welcome page that displays a motivational quote and leads users to the **AuthPage**.
-   - **AuthPage**: Allows users to either log in or register. A toggle between login and registration screens ensures a smooth flow.
-   - **Home Page**: The user’s dashboard where financial summaries are displayed, including total available money, along with quick access to transactions, tips, and budget management.
-
-3. **👤 Profile Management**
-   - Profile page for managing personal details, currency preferences, and exporting reports.
-
-4. **⚙️ Navigation & Settings**
-   - **Bottom Navigation Bar**: Provides easy access to key sections like Home, Transactions, Budgets, and Profile.
-   - **Settings Page**: Includes options for currency change, exporting reports, and more.
+<p><strong>Wallet Watch</strong> is an intuitive, easy-to-use finance management app designed to help users manage their finances. The app offers a clean, modern user interface and powerful features like transaction tracking, budget management, and financial goal-setting, all while securely integrating with Firebase for user authentication and data storage.</p>
 
 ---
 
-## 📅 **Future Work**
-- **📊 Advanced Analytics**: Implement graphs and charts for a visual representation of expenses, income, and budget overviews.
-- **💰 Budget Tracking**: Complete the budgeting feature to allow users to set, track, and visualize their financial goals.
-- **🌍 Multi-Currency Support**: Enhance functionality by supporting multiple currencies, providing global usability.
-- **⚠️ Notifications**: Introduce alerts for upcoming bills, budget limits, or transaction reminders.
+## Goal :dart: 
+
+The main goal of **Wallet Watch** is to provide an all-in-one solution for personal finance management, allowing users to:
+- 👤 **Maintain a personal profile** to track financial goals and details.
+- 📊 **Track income and expenses.**
+- 💰 **Set budgets for different categories.**
+- 📅 **Manage recurring subscriptions** and track payments like insurance.
+- 💸 **Track loans** and monitor progress.
+---
+
+## Running the Project
+
+### Prerequisites
+
+Before setting up the project, make sure you have the following installed:
+
+- [Flutter](https://flutter.dev/docs/get-started/install)
+- [Firebase Account](https://firebase.google.com/)
+- A code editor like [Visual Studio Code](https://code.visualstudio.com/) or [Android Studio](https://developer.android.com/studio)
+
+### Steps to Run the Project
+
+1. **Clone the repository**
+
+   Clone the repository using the following command:
+
+   ```bash
+   git clone https://github.com/nainika0305/Wallet_Watch.git
+   ```
+
+2. **Install dependencies**
+
+   Navigate to the project folder and run the following command to install all dependencies:
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Configure Firebase**
+
+   - Set up a Firebase project from the [Firebase Console](https://console.firebase.google.com/).
+   - Follow the steps to enable **Firebase Authentication** (email/password).
+   - Configure **Firebase Firestore** to store transactions, budgets, and feedback.
+   - Download and add the `google-services.json` (for Android) or `GoogleService-Info.plist` (for iOS) to your project.
+
+4. **Run the app**
+
+   Ensure you have a device or emulator running, then execute the following command to run the app:
+
+   ```bash
+   flutter run
+   ```
+
+### Additional Configuration
+
+- For **Android**, make sure to add the `google-services.json` file to the `android/app` directory.
+- For **iOS**, add the `GoogleService-Info.plist` file to the `ios/Runner` directory and ensure your app’s deployment target is set to at least iOS 10.
+
+### Troubleshooting
+
+- If you encounter issues with Firebase, check your Firebase setup and ensure all configurations are correctly followed.
+- For issues related to dependencies, try running `flutter clean` and then `flutter pub get` again.
+
 
 ---
 
-## 📱 **App Flow**
-1. **Hi Page (Motivational Quote)**  
-   The journey begins with a motivational quote on the **HiPage**, welcoming the user and guiding them to the **AuthPage** for login or registration.
+## The Team 👥
 
-2. **AuthPage (Login or Register)**  
-   On this screen, users can either log in to their existing account or register as a new user.  
-   - **Login:** Enter email and password to log in.  
-   - **Register:** Sign up with first name, last name, email, password, and currency preferences.
 
-3. **RegisterPage (User Registration)**  
-   When the user chooses to sign up, they are prompted to fill out their personal information. Once they submit their details, the app creates a new account, stores user information in Firebase, and redirects them to the **HomePage**.
 
-4. **HomePage (Dashboard)**  
-   Upon successful login or registration, users are taken to their **HomePage**, where they can manage their financial details, view transaction summaries, set budgets, and track progress.
+We are the team behind **Wallet Watch**, focused on providing an intuitive solution to help users manage their finances effectively.
+
+### Member 1: Nainika Agrawal
+- LinkedIn: [Link]
+- GitHub: [Link]
+
+### Member 2: Kavya Gupta
+- LinkedIn: [https://www.linkedin.com/in/kavya-gupta-442a62285/](https://www.linkedin.com/in/kavya-gupta-442a62285/)
+- GitHub: [https://github.com/kavyagupta3011](https://github.com/kavyagupta3011)
 
 ---
+
+
+
+
+
