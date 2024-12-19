@@ -130,7 +130,7 @@ class _InsuranceState extends State<Insurance> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Amount: \$${data['amount']}'),
+                              Text('Amount: \₹${data['amount']}'),
                               Text('Next Due Date: ${DateFormat('yyyy-MM-dd').format(nextDueDate)}'),
                               Text('Days Remaining: ${daysRemaining > 0 ? daysRemaining : 0}'),
                               LinearProgressIndicator(

@@ -81,7 +81,7 @@ class Subscriptions extends StatelessWidget {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Amount: \$${data['amount']}'),
+                            Text('Amount: \₹${data['amount']}'),
                             Text(
                                 'Next Payment: ${DateFormat('yyyy-MM-dd').format(nextPaymentDate)}'),
                             Text(

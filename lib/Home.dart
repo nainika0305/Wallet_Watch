@@ -54,7 +54,24 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // for printing
+  String getDaySuffix(int day) {
+    if (day >= 11 && day <= 13) {
+      return 'th';
+    }
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
 
+  // display transactiosn
   Future<void> _fetchGraphData() async {
     try {
       QuerySnapshot query = await FirebaseFirestore.instance
@@ -69,8 +86,18 @@ class _HomeState extends State<Home> {
 
       Map<String, double> incomeData = {};
       Map<String, double> expenseData = {};
+
       for (var transaction in transactions) {
-        String dateKey = DateFormat('yyyy-MM-dd').format(transaction['date'].toDate());
+        // Ensure the date is properly parsed if it's a string
+        DateTime transactionDate;
+        if (transaction['date'] is String) {
+          transactionDate = DateTime.parse(transaction['date']);
+        } else {
+          // If it's already a Timestamp, convert it to DateTime
+          transactionDate = (transaction['date'] as Timestamp).toDate();
+        }
+
+        String dateKey = DateFormat('yyyy-MM-dd').format(transactionDate); // Format the date as key
         double amount = transaction['amount'];
 
         if (transaction['type'] == 'Income') {
@@ -80,13 +107,22 @@ class _HomeState extends State<Home> {
         }
       }
 
+      print("income data, $incomeData");
+      print("expense data, $expenseData");
+
       // Generate x-axis labels and map to FlSpot points
       List<DateTime> allDates = [];
       for (var i = 0; i <= toDate.difference(fromDate).inDays; i++) {
         allDates.add(fromDate.add(Duration(days: i)));
       }
 
-      xAxisLabels = allDates.map((date) => DateFormat('MM-dd').format(date)).toList();
+      xAxisLabels = allDates.map((date) {
+        int day = date.day;
+        String suffix = getDaySuffix(day);  // Ensure this function is correct
+        String formattedDate = DateFormat('d MMM').format(date);
+        return formattedDate.replaceFirst(day.toString(), '$day$suffix');
+      }).toList();
+
       incomeSpots = _generateSpots(allDates, incomeData);
       expenseSpots = _generateSpots(allDates, expenseData);
 
@@ -96,17 +132,13 @@ class _HomeState extends State<Home> {
     }
   }
 
+// Helper function to generate spots
   List<FlSpot> _generateSpots(List<DateTime> allDates, Map<String, double> data) {
-    return allDates
-        .asMap()
-        .entries
-        .map((entry) {
-      int index = entry.key;
-      DateTime date = entry.value;
+    return allDates.map((date) {
       String dateKey = DateFormat('yyyy-MM-dd').format(date);
-      return FlSpot(index.toDouble(), data[dateKey] ?? 0.0);
-    })
-        .toList();
+      double amount = data[dateKey] ?? 0.0;
+      return FlSpot(date.day.toDouble(), amount);  // Use day as x-axis value
+    }).toList();
   }
 
   Future<void> _pickDateRange() async {
@@ -145,6 +177,7 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+
       child: Column(
         children: [
           Row(
@@ -186,51 +219,56 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
+          SizedBox(height: 15),
           Expanded(
             child: LineChart(
-              LineChartData(
-                titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      getTitlesWidget: (value, meta) {
-                        int index = value.toInt();
-                        if (index >= 0 && index < xAxisLabels.length) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              xAxisLabels[index],
-                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+                LineChartData(
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          int index = value.toInt();
+                          if (index >= 0 && index < xAxisLabels.length) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                xAxisLabels[index],
+                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false), // Hide left axis titles (y-axis)
+                    ),
+                    topTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false), // Hide top axis titles
                     ),
                   ),
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(showTitles: true),
-                  ),
-                ),
-                gridData: FlGridData(show: true),
-                borderData: FlBorderData(show: true),
-                lineBarsData: [
-                  if (selectedGraphType == 'Combined' || selectedGraphType == 'Income')
-                    LineChartBarData(
-                      spots: incomeSpots,
-                      isCurved: true,
-                      barWidth: 3,
-                      color: Colors.green,
-                    ),
-                  if (selectedGraphType == 'Combined' || selectedGraphType == 'Expenses')
-                    LineChartBarData(
-                      spots: expenseSpots,
-                      isCurved: true,
-                      barWidth: 3,
-                      color: Colors.red,
-                    ),
-                ],
-              ),
+                  gridData: FlGridData(show: false), // Hide grid lines
+                  borderData: FlBorderData(show: true), // Optionally show the border
+                  lineBarsData: [
+                    if (selectedGraphType == 'Combined' || selectedGraphType == 'Income')
+                      LineChartBarData(
+                        spots: incomeSpots,
+                        isCurved: false,
+                        barWidth: 3,
+                        color: Colors.green,
+                      ),
+                    if (selectedGraphType == 'Combined' || selectedGraphType == 'Expenses')
+                      LineChartBarData(
+                        spots: expenseSpots,
+                        isCurved: false,
+                        barWidth: 3,
+                        color: Colors.red,
+                      ),
+                  ],
+                )
+
             ),
           ),
         ],
