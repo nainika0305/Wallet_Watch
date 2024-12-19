@@ -89,7 +89,7 @@ class LoginPageState extends State<LoginPage> {
                   Transform.translate(
                     offset: Offset(0, -80), // Move the widget upward to reduce spacing
                     child: Image.asset(
-                      'assests/Untitled_design-removebg-preview.png', // Path to your image file in the assets folder
+                      'assets/ourLogo.png', // Path to your image file in the assets folder
                       width: 400,             // Adjust size as needed
                       height: 400,
                     ),
