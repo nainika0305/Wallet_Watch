@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Transform.translate(
                     offset: Offset(0, -80),
                     child: Image.asset(
-                      'assests/Untitled_design-removebg-preview.png',
+                      'assets/ourLogo.png',
                       width: 200,
                       height: 200,
                     ),
