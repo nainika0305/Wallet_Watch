@@ -62,7 +62,7 @@ class MeetTheTeamPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle, // Circular shape for the logo
                   image: DecorationImage(
-                    image: AssetImage('assets/logo.png'), // Replace with app logo
+                    image: AssetImage('assets/ourLogo.png'), // Replace with app logo
                     fit: BoxFit.cover, // Ensure the image covers the circle
                   ),
                 ),
