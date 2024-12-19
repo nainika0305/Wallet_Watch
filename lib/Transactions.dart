@@ -97,7 +97,7 @@ class _TransactionsPageState extends State<Transactions> {
                         child: ListTile(
                           title: Text(data['title'] ?? 'No Title'),
                           subtitle: Text(
-                              'Category: ${data['category'] ?? 'Unknown'} | Amount: \$${data['amount'] ?? 0}'),
+                              '${data['category'] ?? 'Unknown'} | Amount: ₹${data['amount'] ?? 0}'),
                           trailing: Text(
                             data['date'] != null
                                 ? data['date'] is Timestamp
@@ -141,7 +141,7 @@ class _TransactionsPageState extends State<Transactions> {
                     // Navigate to Manage Subscriptions Page
                     Navigator.pushNamed(context, '/Subscriptions');
                   },
-                  child: Text('Manage Subscriptions'),
+                  child: Text('Subscriptions'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -230,3 +230,4 @@ class _TransactionsPageState extends State<Transactions> {
   }
 
 }
+

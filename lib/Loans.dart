@@ -15,66 +15,42 @@ class _LoansState extends State<Loans> {
 
   final userId = FirebaseAuth.instance.currentUser!.email; //user id
 
-  final TextEditingController _loanAmountController = TextEditingController();
-  final TextEditingController _interestRateController = TextEditingController();
-  final TextEditingController _loanTenureController = TextEditingController(); // in months
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _loanTitleController = TextEditingController();
+  Future<void> _calculateInterest(DocumentSnapshot loan) async {
+    final loanData = loan.data() as Map<String, dynamic>;
+    final double interestRate = loanData['interestRate']; // Annual interest rate in percentage
+    final double remainingAmount = loanData['remainingAmount'];
 
-  DateTime _selectedStartDate = DateTime.now();
+    // Calculate monthly interest
+    final double monthlyInterest = remainingAmount * (interestRate / 100) / 12;
 
-  // Add loan to Firestore
-  Future<void> _addLoan() async {
+    // Update Firestore with the new interest
+    await loan.reference.update({
+      'accruedInterest': (loanData['accruedInterest'] as double) + monthlyInterest,
+    });
+  }
 
-    if (_loanAmountController.text.isNotEmpty &&
-        _interestRateController.text.isNotEmpty &&
-        _loanTenureController.text.isNotEmpty &&
-        _startDateController.text.isNotEmpty)
-    {
-      final double loanAmount = double.parse(_loanAmountController.text);
-      final int loanTenure = int.parse(_loanTenureController.text);
 
-      final loanData = {
-        'loan title': _loanTitleController,
-        'loanAmount': loanAmount,
-        'interestRate': double.parse(_interestRateController.text),
-        'tenure': loanTenure,
-        'startDate': _selectedStartDate.toIso8601String(),
-        'notes': _notesController.text,
-        'amountPaid': 0.0,
-        'remainingAmount': loanAmount,
-      };
 
-      try {
-        await FirebaseFirestore.instance.collection('users').doc(userId).collection('Loans').add(loanData);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Loan added successfully')),
-        );
-        _resetForm();
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add loan: $e')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all required fields')),
-      );
+  @override
+  void initState() {
+    super.initState();
+    _updateAllLoans();
+  }
+
+  Future<void> _updateAllLoans() async {
+    final loansSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('Loans')
+        .get();
+
+    for (final loan in loansSnapshot.docs) {
+      await _calculateInterest(loan);
     }
   }
 
-  // Reset form fields
-  void _resetForm() {
-    _loanAmountController.clear();
-    _interestRateController.clear();
-    _loanTenureController.clear();
-    _startDateController.clear();
-    _notesController.clear();
-    _selectedStartDate = DateTime.now();
-  }
 
-// edit each transaton
+  // edit each transaton
   Future<void> _showPaymentDialog(BuildContext context, DocumentSnapshot loan) async {
     final TextEditingController paymentController = TextEditingController();
     final loanData = loan.data() as Map<String, dynamic>;
@@ -109,15 +85,49 @@ class _LoansState extends State<Loans> {
                   return;
                 }
 
-                // Update Firestore with payment logic
-                final updatedAmountPaid = (loanData['amountPaid'] as double) + paymentAmount;
-                final updatedRemainingAmount =
-                    (loanData['remainingAmount'] as double) - paymentAmount;
+                await _calculateInterest(loan); // Ensure interest is up-to-date
+
+
+                // update the money u hacve paid, it is an expense
+                try {
+                  // Initialize the totalMoney to 0.0
+                  double totalMoney = 0.0;
+                  final docRef = FirebaseFirestore.instance.collection('users').doc(userId); // DocumentReference for the user
+                  final doc = await docRef.get(); // Get the document snapshot
+
+                  if (doc.exists) {
+                    // Fetch current totalMoney, ensuring it's a double
+                    totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
+                    print("Total money before update: $totalMoney");
+                  } else {
+                    print("Document does not exist");
+                  }
+                  totalMoney -= paymentAmount;
+                  // Update the totalMoney field in Firestore
+                  await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
+                  print("Total money after update: $totalMoney");
+                } catch (e) {
+                  print("Error updating totalMoney: $e");
+                }
+
+                final loanData = loan.data() as Map<String, dynamic>;
+                double accruedInterest = loanData['accruedInterest'] as double;
+                double remainingAmount = loanData['remainingAmount'] as double;
+
+                // Allocate payment
+                if (paymentAmount <= accruedInterest) {
+                  accruedInterest -= paymentAmount;
+                } else {
+                  final principalPayment = paymentAmount - accruedInterest;
+                  accruedInterest = 0.0;
+                  remainingAmount -= principalPayment;
+                }
 
                 try {
                   await loan.reference.update({
-                    'amountPaid': updatedAmountPaid,
-                    'remainingAmount': updatedRemainingAmount > 0 ? updatedRemainingAmount : 0,
+                    'accruedInterest': accruedInterest,
+                    'remainingAmount': remainingAmount > 0 ? remainingAmount : 0.0,
+                    'amountPaid': (loanData['amountPaid'] as double) + paymentAmount,
                   });
                   Navigator.of(context).pop(); // Close the dialog
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -138,22 +148,6 @@ class _LoansState extends State<Loans> {
     );
   }
 
-  // Select Start Date
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: _selectedStartDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        _selectedStartDate = pickedDate;
-        _startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,104 +155,10 @@ class _LoansState extends State<Loans> {
         title: const Text('Loans'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Add Loan Form
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Add New Loan',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const Divider(),
-                    TextField(
-                      controller: _loanTitleController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _loanAmountController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Loan Amount',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _interestRateController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Interest Rate (%)',
-                        prefixIcon: const Icon(Icons.percent),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _loanTenureController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Loan Tenure (in months)',
-                        prefixIcon: const Icon(Icons.calendar_today),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _startDateController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: 'Start Date',
-                        prefixIcon: const Icon(Icons.date_range),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      onTap: () => _selectStartDate(context),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _notesController,
-                      decoration: InputDecoration(
-                        labelText: 'Notes (Optional)',
-                        prefixIcon: const Icon(Icons.note),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _addLoan,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        ),
-                        child: const Text('Add Loan', style: TextStyle(fontSize: 16)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
 
-            // Loan List
-            const Text(
-              'Your Loans',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
             const Divider(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -285,16 +185,17 @@ class _LoansState extends State<Loans> {
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
 
-                          title: Text('${data['loan title']}, Amount: ₹${data['loanAmount']}'),
+                          title: Text('${data['loanTitle']}, Amount: ₹${data['loanAmount']}'),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
+                              Text('Interest Rate: ${data['interestRate']}% for ${data['tenure']} months'),
+                              Text('Interest per month: ₹${data['InterestPerMonth'].toString()}'),
                               Text('Remaining: ₹${data['remainingAmount']}'),
-                              Text('Interest Rate: ${data['interestRate']}%'),
                               Text('Paid: ₹${data['amountPaid']}'),
                               if (data['notes'] != null && data['notes'].isNotEmpty)
                                 Text('Note: ${data['notes']}'),
+
                               LinearProgressIndicator(
                                 value: progress.clamp(0.0, 1.0),
                                 color: Colors.green,
@@ -315,7 +216,12 @@ class _LoansState extends State<Loans> {
               ),
             ),
           ],
-        ),
+      ),
+       floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addLoan');
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

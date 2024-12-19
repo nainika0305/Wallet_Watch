@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +13,9 @@ class Insurance extends StatefulWidget {
 class _InsuranceState extends State<Insurance> {
 
   // to save to database
+  final userId = FirebaseAuth.instance.currentUser!.email; //user id
+
+
   final TextEditingController _providerController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
@@ -90,123 +94,15 @@ class _InsuranceState extends State<Insurance> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Form for adding insurance policies
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Add New Policy',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const Divider(),
-                    TextField(
-                      controller: _providerController,
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _providerController,
-                      decoration: InputDecoration(
-                        labelText: 'Insurance Provider',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _amountController,
-                      decoration: InputDecoration(
-                        labelText: 'Premium Amount',
-                        prefixIcon: const Icon(Icons.attach_money),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _dueDateController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: 'Next Due Date',
-                        prefixIcon: const Icon(Icons.calendar_today),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onTap: () => _selectDueDate(context),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _termController,
-                      decoration: InputDecoration(
-                        labelText: 'Policy Term (e.g., 1 year, 5 years)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _noteController,
-                      decoration: InputDecoration(
-                        labelText: 'Note (Optional)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _addInsurance,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Add Policy',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // List of insurance policies with progress bar
-            const Text(
-              'Your Insurance Policies',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+       
             const Divider(),
+
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('insurance').snapshots(),
+                stream: FirebaseFirestore.instance.collection('users').doc(userId).collection('insurance').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -234,7 +130,7 @@ class _InsuranceState extends State<Insurance> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Amount: \$${data['amount']}'),
+                              Text('Amount: \₹${data['amount']}'),
                               Text('Next Due Date: ${DateFormat('yyyy-MM-dd').format(nextDueDate)}'),
                               Text('Days Remaining: ${daysRemaining > 0 ? daysRemaining : 0}'),
                               LinearProgressIndicator(
@@ -260,8 +156,14 @@ class _InsuranceState extends State<Insurance> {
                 },
               ),
             ),
-          ],
-        ),
+
+            ],
+            ),
+           floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addInsurance');
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
