@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wallet_watch/goals.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -75,7 +76,7 @@ class _ProfileState extends State<Profile> {
 
             const SizedBox(height: 30.0),
 
-            // Alternating Buttons
+            // Existing buttons
             _buildButtonRow(
               title: 'Settings',
               colors: [Colors.teal, Colors.greenAccent],
@@ -94,7 +95,6 @@ class _ProfileState extends State<Profile> {
                 Navigator.pushNamed(context, '/feedback');
               },
             ),
-
             _buildButtonRow(
               title: 'Log Out',
               colors: [Colors.red, Colors.orange],
@@ -129,6 +129,20 @@ class _ProfileState extends State<Profile> {
               alignment: Alignment.centerRight,
               onTap: () {
                 Navigator.pushNamed(context, '/conversion');
+              },
+            ),
+
+            // New Goals button
+            _buildButtonRow(
+              title: 'Goals',
+              colors: [Colors.orangeAccent, Colors.deepOrange],
+              icon: Icons.flag,
+              alignment: Alignment.centerLeft,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const GoalsPage()),
+                );
               },
             ),
           ],
