@@ -97,7 +97,7 @@ class _TransactionsPageState extends State<Transactions> {
                         child: ListTile(
                           title: Text(data['title'] ?? 'No Title'),
                           subtitle: Text(
-                              'Category: ${data['category'] ?? 'Unknown'} | Amount: ${data['amount'] ?? 0}'),
+                              '${data['category'] ?? 'Unknown'} | Amount: ₹${data['amount'] ?? 0}'),
                           trailing: Text(
                             data['date'] != null
                                 ? data['date'] is Timestamp

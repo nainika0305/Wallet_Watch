@@ -281,7 +281,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     final transactionData = {
                       'amount': double.parse(_amountController.text),
                       'category': _selectedCategory,
-                      'date': _selectedDate.toIso8601String(),
+                      'date': Timestamp.fromDate(_selectedDate),
+
                       'time': _selectedTime.format(context),
                       'modeOfPayment': _modeOfPayment,
                       'title': _titleController.text,

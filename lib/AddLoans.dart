@@ -12,40 +12,47 @@ class AddLoansPage extends StatefulWidget {
 }
 
 class _AddLoansPageState extends State<AddLoansPage> {
-  final userId = FirebaseAuth.instance.currentUser!.email; //user id
+  final userId = FirebaseAuth.instance.currentUser!.email;
 
   final TextEditingController _loanAmountController = TextEditingController();
   final TextEditingController _interestRateController = TextEditingController();
-  final TextEditingController _loanTenureController = TextEditingController(); // in months
+  final TextEditingController _loanTenureController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _loanTitleController = TextEditingController();
 
   DateTime _selectedStartDate = DateTime.now();
 
-  // Add loan to Firestore
   Future<void> _addLoan() async {
-
     if (_loanAmountController.text.isNotEmpty &&
         _interestRateController.text.isNotEmpty &&
         _loanTenureController.text.isNotEmpty &&
-        _startDateController.text.isNotEmpty)
-    {
+        _startDateController.text.isNotEmpty) {
+      final double loanAmount = double.parse(_loanAmountController.text);
+      final double interestRate = double.parse(_interestRateController.text) / 100;
       final int loanTenure = int.parse(_loanTenureController.text);
 
       final loanData = {
-        'loan title': _loanTitleController.text,
-        'loanAmount': double.parse(_loanAmountController.text),
-        'interestRate': double.parse(_interestRateController.text),
+        'loanTitle': _loanTitleController.text,
+        'loanAmount': loanAmount,
+        'interestRate': interestRate,
         'tenure': loanTenure,
         'startDate': _selectedStartDate.toIso8601String(),
         'notes': _notesController.text,
         'amountPaid': 0.0,
-        'remainingAmount': double.parse(_loanAmountController.text),
+        'remainingAmount': loanAmount,
+        'accruedInterest': 0.0,
+        'lastInterestCalculationDate': DateTime.now().toIso8601String(),
+        'InterestPerMonth': (double.parse(_loanAmountController.text) * double.parse(_interestRateController.text))/(loanTenure*100),
       };
 
       try {
-        await FirebaseFirestore.instance.collection('users').doc(userId).collection('Loans').add(loanData);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('Loans')
+            .add(loanData);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Loan added successfully')),
         );
@@ -63,7 +70,6 @@ class _AddLoansPageState extends State<AddLoansPage> {
     }
   }
 
-  // Reset form fields
   void _resetForm() {
     _loanAmountController.clear();
     _interestRateController.clear();
@@ -73,8 +79,6 @@ class _AddLoansPageState extends State<AddLoansPage> {
     _selectedStartDate = DateTime.now();
   }
 
-
-  // Select Start Date
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -90,7 +94,6 @@ class _AddLoansPageState extends State<AddLoansPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,11 +102,10 @@ class _AddLoansPageState extends State<AddLoansPage> {
         centerTitle: true,
         elevation: 0,
       ),
-       body: Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Add Loan Form
             Card(
               elevation: 8,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -112,8 +114,6 @@ class _AddLoansPageState extends State<AddLoansPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    const Divider(),
                     TextField(
                       controller: _loanTitleController,
                       keyboardType: TextInputType.text,
@@ -136,7 +136,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                       controller: _interestRateController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: 'Interest Rate (%)',
+                        labelText: 'Interest Rate (%) per annum',
                         prefixIcon: const Icon(Icons.percent),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -190,8 +190,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
             const SizedBox(height: 20),
           ],
         ),
-       ),
+      ),
     );
   }
 }
-

@@ -15,7 +15,42 @@ class _LoansState extends State<Loans> {
 
   final userId = FirebaseAuth.instance.currentUser!.email; //user id
 
-// edit each transaton
+  Future<void> _calculateInterest(DocumentSnapshot loan) async {
+    final loanData = loan.data() as Map<String, dynamic>;
+    final double interestRate = loanData['interestRate']; // Annual interest rate in percentage
+    final double remainingAmount = loanData['remainingAmount'];
+
+    // Calculate monthly interest
+    final double monthlyInterest = remainingAmount * (interestRate / 100) / 12;
+
+    // Update Firestore with the new interest
+    await loan.reference.update({
+      'accruedInterest': (loanData['accruedInterest'] as double) + monthlyInterest,
+    });
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _updateAllLoans();
+  }
+
+  Future<void> _updateAllLoans() async {
+    final loansSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('Loans')
+        .get();
+
+    for (final loan in loansSnapshot.docs) {
+      await _calculateInterest(loan);
+    }
+  }
+
+
+  // edit each transaton
   Future<void> _showPaymentDialog(BuildContext context, DocumentSnapshot loan) async {
     final TextEditingController paymentController = TextEditingController();
     final loanData = loan.data() as Map<String, dynamic>;
@@ -50,6 +85,9 @@ class _LoansState extends State<Loans> {
                   return;
                 }
 
+                await _calculateInterest(loan); // Ensure interest is up-to-date
+
+
                 // update the money u hacve paid, it is an expense
                 try {
                   // Initialize the totalMoney to 0.0
@@ -66,22 +104,30 @@ class _LoansState extends State<Loans> {
                   }
                   totalMoney -= paymentAmount;
                   // Update the totalMoney field in Firestore
-                  // Update the totalMoney field in Firestore
                   await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
                   print("Total money after update: $totalMoney");
                 } catch (e) {
                   print("Error updating totalMoney: $e");
                 }
 
-                // Update Firestore with payment logic
-                final updatedAmountPaid = (loanData['amountPaid'] as double) + paymentAmount;
-                final updatedRemainingAmount =
-                    (loanData['remainingAmount'] as double) - paymentAmount;
+                final loanData = loan.data() as Map<String, dynamic>;
+                double accruedInterest = loanData['accruedInterest'] as double;
+                double remainingAmount = loanData['remainingAmount'] as double;
+
+                // Allocate payment
+                if (paymentAmount <= accruedInterest) {
+                  accruedInterest -= paymentAmount;
+                } else {
+                  final principalPayment = paymentAmount - accruedInterest;
+                  accruedInterest = 0.0;
+                  remainingAmount -= principalPayment;
+                }
 
                 try {
                   await loan.reference.update({
-                    'amountPaid': updatedAmountPaid,
-                    'remainingAmount': updatedRemainingAmount > 0 ? updatedRemainingAmount : 0,
+                    'accruedInterest': accruedInterest,
+                    'remainingAmount': remainingAmount > 0 ? remainingAmount : 0.0,
+                    'amountPaid': (loanData['amountPaid'] as double) + paymentAmount,
                   });
                   Navigator.of(context).pop(); // Close the dialog
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -139,16 +185,17 @@ class _LoansState extends State<Loans> {
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
 
-                          title: Text('${data['loan title']}, Amount: ₹${data['loanAmount']}'),
+                          title: Text('${data['loanTitle']}, Amount: ₹${data['loanAmount']}'),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
+                              Text('Interest Rate: ${data['interestRate']}% for ${data['tenure']} months'),
+                              Text('Interest per month: ₹${data['InterestPerMonth'].toString()}'),
                               Text('Remaining: ₹${data['remainingAmount']}'),
-                              Text('Interest Rate: ${data['interestRate']}%'),
                               Text('Paid: ₹${data['amountPaid']}'),
                               if (data['notes'] != null && data['notes'].isNotEmpty)
                                 Text('Note: ${data['notes']}'),
+
                               LinearProgressIndicator(
                                 value: progress.clamp(0.0, 1.0),
                                 color: Colors.green,
