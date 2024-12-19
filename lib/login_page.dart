@@ -84,149 +84,171 @@ class LoginPageState extends State<LoginPage> {
 
 
             child: Center(
-
                 child: Column(children: [
-          const SizedBox(height: 150),
+                  const SizedBox(height: 70),
+                  Transform.translate(
+                    offset: Offset(0, -80), // Move the widget upward to reduce spacing
+                    child: Image.asset(
+                      'assests/Untitled_design-removebg-preview.png', // Path to your image file in the assets folder
+                      width: 400,             // Adjust size as needed
+                      height: 400,
+                    ),
+                  ),
           //logo
-          const Icon(
-            Icons.account_balance_wallet,
-            size: 100,
-            color: Color(0xFFFDA4BA),
-          ),
-          const SizedBox(height: 25),
-
           // Hello again!
-          const Text('Welcome back!',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: Color(0xFF003366),
-              )),
-          const SizedBox(height: 20),
-          // email Textfield
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFFDA4BA).withOpacity(0.35),
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
-              ), // BoxDecoration
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: TextField(
-                  controller: _emailController, //get input that user inputs
-                  decoration: InputDecoration(
-
-                    border: InputBorder.none,
-                    hintText: 'Email',
-
+                  Transform.translate(
+                    offset: Offset(0, -140), // Move the widget upward to reduce spacing
+                    child: const Text('Welcome back!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          color: Color(0xFF003366),
+                        )),
                   ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
 
-          // password textfield
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFFDA4BA).withOpacity(0.35),
-                border: Border.all(color: Colors.white),
-                borderRadius: BorderRadius.circular(12),
-              ), // BoxDecoration
-              child: Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Password',
+
+                  Transform.translate(
+                    offset: Offset(0, -100), // Move the widget upward to reduce spacing
+                    child:  // email Textfield
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFDA4BA).withOpacity(0.35),
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
+                        ), // BoxDecoration
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: _emailController, //get input that user inputs
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Email',
+                            ),
+                          ),
+                        ),
                   ),
-                ),
-              ),
             ),
           ),
 
-                  const SizedBox(height: 20),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return ForgotPasswordPage();
-                    },
-                    ),
-                    );
-                    },
-                  child: Text('Forgot Password?',
-                    style: TextStyle(
-
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
-
-                    ),),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 20),
-
-          //sign in button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: GestureDetector(
-              onTap: signIn,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Color(0xFF73A5C6),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Not a member?  ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  Transform.translate(
+                    offset: Offset(0, -80), // Move the widget upward to reduce spacing
+                    child:           // password textfield
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFDA4BA).withOpacity(0.35),
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12),
+                        ), // BoxDecoration
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Password',
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: widget.showRegisterPage,
-                      child: Text(
-                        'Register now',
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
+                  ),
+
+                  Transform.translate(
+                    offset: Offset(0, -70), // Move the widget upward to reduce spacing
+                    child:  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return ForgotPasswordPage();
+                              },
+                              ),
+                              );
+                            },
+                            child: Text('Forgot Password?',
+                              style: TextStyle(
+
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blueAccent,
+
+                              ),),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-        ])))));
+
+                  ),
+
+
+
+                  Transform.translate(
+                    offset: Offset(0, -60), // Move the widget upward to reduce spacing
+                    child:  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: GestureDetector(
+                        onTap: signIn,
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF73A5C6),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Log In',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  ),
+
+
+                  Transform.translate(
+                    offset: Offset(0, -40), // Move the widget upward to reduce spacing
+                    child:   // not a member? register now
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Not a member?  ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                            onTap: widget.showRegisterPage,
+                            child: Text(
+                              'Register now',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                 ])
+            )
+         )
+        )
+    );
   }
 }
