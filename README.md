@@ -79,8 +79,8 @@ Before setting up the project, make sure you have the following installed:
 We are the team behind **Wallet Watch**, focused on providing an intuitive solution to help users manage their finances effectively.
 
 ### Member 1: Nainika Agrawal
--LinkedIn: [https://www.linkedin.com/in/kavya-gupta-442a62285/](https://www.linkedin.com/in/nainika-agrawal/)
-- GitHub: [https://github.com/kavyagupta3011](https://github.com/nainika0305)
+-LinkedIn: [https://www.linkedin.com/in/nainika-agrawal/](https://www.linkedin.com/in/nainika-agrawal/)
+- GitHub: [https://github.com/nainika0305](https://github.com/nainika0305)
 
 ### Member 2: Kavya Gupta
 - LinkedIn: [https://www.linkedin.com/in/kavya-gupta-442a62285/](https://www.linkedin.com/in/kavya-gupta-442a62285/)
