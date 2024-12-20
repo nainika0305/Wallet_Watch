@@ -16,7 +16,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
   final TextEditingController _amountController = TextEditingController();
 
   String? _selectedCategory;
-  Color _selectedColor = Colors.blue;
+  Color _selectedColor = Color(0xFFCDB4DB); // Default to lavender color
 
   bool isExpenseBudget = true;
 
@@ -37,6 +37,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
       appBar: AppBar(
         title: const Text('Add Budget'),
         centerTitle: true,
+        backgroundColor: Color(0xFFCDB4DB), // Lavender
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -46,9 +47,9 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildBudgetTypeButton('Expense Budget', isExpenseBudget, true),
+                _buildBudgetTypeButton('Expense Budget', isExpenseBudget, true, Color(0xFFBDE0FE)),
                 const SizedBox(width: 16),
-                _buildBudgetTypeButton('Savings Budget', !isExpenseBudget, false),
+                _buildBudgetTypeButton('Savings Budget', !isExpenseBudget, false, Color(0xFFFAF9F5)),
               ],
             ),
             const SizedBox(height: 20),
@@ -61,18 +62,21 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                     controller: _nameController,
                     label: 'Budget Name',
                     icon: Icons.edit,
+                    color: Color(0xFFCDB4DB),
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
                     controller: _timelineController,
                     label: 'Timeline (e.g., 3 months)',
                     icon: Icons.timer,
+                    color: Color(0xFFFAF9F5),
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
                     controller: _amountController,
                     label: 'Budget Amount',
                     icon: Icons.attach_money,
+                    color: Color(0xFFFAF9F5),
                   ),
                   const SizedBox(height: 16),
                   _buildColorPicker(),
@@ -88,6 +92,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
               child: ElevatedButton(
                 onPressed: _saveBudget,
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFFAFCC), // Rose pink
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -95,7 +100,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                 ),
                 child: const Text(
                   'Save Budget',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ),
             ),
@@ -105,7 +110,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
     );
   }
 
-  Widget _buildBudgetTypeButton(String title, bool isActive, bool setExpense) {
+  Widget _buildBudgetTypeButton(String title, bool isActive, bool setExpense, Color activeColor) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -115,7 +120,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
-          color: isActive ? Colors.blue : Colors.grey[300],
+          color: isActive ? activeColor : Colors.grey[300],
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
@@ -133,13 +138,14 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
     required TextEditingController controller,
     required String label,
     required IconData icon,
+    required Color color,
   }) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon),
-        border: const OutlineInputBorder(),
+        prefixIcon: Icon(icon, color: color),
+        border: OutlineInputBorder(borderSide: BorderSide(color: color)),
       ),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
     );
