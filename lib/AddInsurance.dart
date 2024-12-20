@@ -11,20 +11,17 @@ class AddInsurancePage extends StatefulWidget {
 }
 
 class _AddInsurancePageState extends State<AddInsurancePage> {
-  // to save to database
-  final userId = FirebaseAuth.instance.currentUser!.email; //user id
-
+  final userId = FirebaseAuth.instance.currentUser!.email;
 
   final TextEditingController _providerController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dueDateController = TextEditingController();
   final TextEditingController _termController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
-  final TextEditingController _titleController =TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
 
   DateTime _selectedDueDate = DateTime.now();
 
-  // Add insurance policy to Firestore
   Future<void> _addInsurance() async {
     if (_providerController.text.isNotEmpty &&
         _amountController.text.isNotEmpty &&
@@ -41,33 +38,32 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
       };
 
       try {
-        await FirebaseFirestore.instance.collection('users').doc(userId).collection('insurance').add(insuranceData);
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('insurance')
+            .add(insuranceData);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Insurance policy added successfully')),
         );
         _resetForm();
+
         try {
-          // Initialize the totalMoney to 0.0
           double totalMoney = 0.0;
-          final docRef = FirebaseFirestore.instance.collection('users').doc(userId); // DocumentReference for the user
-          final doc = await docRef.get(); // Get the document snapshot
+          final docRef = FirebaseFirestore.instance.collection('users').doc(userId);
+          final doc = await docRef.get();
 
           if (doc.exists) {
-            // Fetch current totalMoney, ensuring it's a double
-            totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
-            print("Total money before update: $totalMoney");
-          } else {
-            print("Document does not exist");
+            totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble();
           }
-          // Parse the transaction amount and type
-          double transactionAmount = double.tryParse(insuranceData['amount'].toString()) ?? 0.0; // Safely parse to double
+
+          double transactionAmount =
+              double.tryParse(insuranceData['amount'].toString()) ?? 0.0;
 
           totalMoney -= transactionAmount;
-          // Update the totalMoney field in Firestore
-          // Update the totalMoney field in Firestore
-          await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
 
+          await docRef.update({'totalMoney': totalMoney});
         } catch (e) {
           print("Error fetching total money: $e");
         }
@@ -85,7 +81,6 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
     }
   }
 
-  // Reset form fields
   void _resetForm() {
     _titleController.clear();
     _providerController.clear();
@@ -96,7 +91,6 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
     _selectedDueDate = DateTime.now();
   }
 
-  // Select due date
   Future<void> _selectDueDate(BuildContext context) async {
     final pickedDate = await showDatePicker(
       context: context,
@@ -116,114 +110,194 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add new insurance policy'),
+        title: const Text('Add Insurance Policy',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black,
+          ),),
         centerTitle: true,
         elevation: 0,
+        backgroundColor: Color(0xFF3B8EF3).withOpacity(0.9),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Form for adding insurance policies
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Divider(),
-                    TextField(
-                      controller: _titleController,
-                      decoration: InputDecoration(
-                        labelText: 'Title',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFFFDBE9),
+              Color(0xFFE6D8FF), // Very light lavender
+              Color(0xFFBDE0FE), // Very light blue
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Card(
+                elevation: 8,
+                color: Color(0xFFBDE0FE).withOpacity(0.8),
+                borderOnForeground: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(19.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Policy Details',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF003366), // Dark blue for contrast
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _providerController,
-                      decoration: InputDecoration(
-                        labelText: 'Insurance Provider',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _amountController,
-                      decoration: InputDecoration(
-                        labelText: 'Premium Amount',
-                        prefixIcon: const Icon(Icons.attach_money),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _dueDateController,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: 'Next Due Date',
-                        prefixIcon: const Icon(Icons.calendar_today),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onTap: () => _selectDueDate(context),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _termController,
-                      decoration: InputDecoration(
-                        labelText: 'Policy Term (e.g., 1 year, 5 years)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _noteController,
-                      decoration: InputDecoration(
-                        labelText: 'Note (Optional)',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _addInsurance,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
+                      const Divider(color: Color(0xFF003366)), // Divider color to match the theme
+                      SizedBox(height: 16),
+
+                      TextField(
+                        controller: _titleController,
+                        decoration: InputDecoration(
+                          labelText: 'Title',
+                          prefixIcon: const Icon(Icons.title),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                           ),
                         ),
-                        child: const Text(
-                          'Add Policy',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+
+                      TextField(
+                        controller: _providerController,
+                        decoration: InputDecoration(
+                          labelText: 'Insurance Provider',
+                          prefixIcon: const Icon(Icons.computer ),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+
+                      TextField(
+                        controller: _amountController,
+                        decoration: InputDecoration(
+                          labelText: 'Premium Amount',
+                          prefixIcon: const Icon(Icons.attach_money),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                          ),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                      const SizedBox(height: 20),
+
+                      TextField(
+                        controller: _dueDateController,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: 'Next Due Date',
+                          prefixIcon: const Icon(Icons.calendar_today),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                          ),
+                        ),
+                        onTap: () => _selectDueDate(context),
+                      ),
+                      const SizedBox(height: 20),
+
+                      TextField(
+                        controller: _termController,
+                        decoration: InputDecoration(
+                          labelText: 'Policy Term (e.g., 1 year, 5 years)',
+                          prefixIcon: const Icon(Icons.timer),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: _noteController,
+                        decoration: InputDecoration(
+                          labelText: 'Note (Optional)',
+                          prefixIcon: const Icon(Icons.note),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF003366),
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _addInsurance,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF3B8EF3),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Add Policy',
+                            style: TextStyle(
+                                fontSize: 19, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+            ],
+          ),
         ),
       ),
     );

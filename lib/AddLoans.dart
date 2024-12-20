@@ -98,98 +98,194 @@ class _AddLoansPageState extends State<AddLoansPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Loan'),
+        title: const Text('Add New Loan',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         centerTitle: true,
         elevation: 0,
+        backgroundColor:Color(0xFF3B8EF3),
       ),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+
+          colors: [
+            Color(0xFFFFDBE9),
+            Color(0xFFE6D8FF), // Very light lavender
+            Color(0xFFBDE0FE), // Very light blue
+          ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        ),
+        ),
+      child:Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Card(
               elevation: 8,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              color: Color(0xFFBDE0FE).withOpacity(0.65),
+              borderOnForeground: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(19.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'Loan Details',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF003366), // Dark blue for contrast
+                      ),
+                    ),
+                    const Divider(color: Color(0xFF003366)), // Divider color to match the theme
+                    SizedBox(height: 16),
+
                     TextField(
                       controller: _loanTitleController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         labelText: 'Title',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        prefixIcon: const Icon(Icons.title),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _loanAmountController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Loan Amount',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        prefixIcon: const Icon(Icons.money),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _interestRateController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Interest Rate (%) per annum',
-                        prefixIcon: const Icon(Icons.percent),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        prefixIcon: const Icon(Icons.percent_rounded),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _loanTenureController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Loan Tenure (in months)',
-                        prefixIcon: const Icon(Icons.calendar_today),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        prefixIcon: const Icon(Icons.timer),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _startDateController,
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: 'Start Date',
-                        prefixIcon: const Icon(Icons.date_range),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        prefixIcon: const Icon(Icons.calendar_month),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                       onTap: () => _selectStartDate(context),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     TextField(
                       controller: _notesController,
                       decoration: InputDecoration(
                         labelText: 'Notes (Optional)',
                         prefixIcon: const Icon(Icons.note),
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 40),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: _addLoan,
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.all(15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          backgroundColor: const Color(0xFF3B8EF3),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        child: const Text('Add Loan', style: TextStyle(fontSize: 16)),
+                        child: const Text('Add Loan', style: TextStyle(fontSize: 19,color: Colors.white), ),
                       ),
                     ),
+                    const SizedBox(height: 10),
                   ],
                 ),
+
               ),
             ),
-            const SizedBox(height: 20),
+
           ],
         ),
+      ),
       ),
     );
   }

@@ -21,7 +21,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
 
   bool _isExpense = true;
   String? _selectedCategory;
-  String _modeOfPayment = 'UPI';
+  String? _modeOfPayment ;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
 
@@ -36,7 +36,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     'Bills',
     'Electronics',
     'Medicines/Healthcare',
-    'Other'
+    'Others',
   ];
 
   final List<String> _incomeCategories = [
@@ -124,8 +124,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
       decoration: InputDecoration(
         prefixIcon: Icon(icon),
         labelText: label,
+        filled: true, // To fill the background with color
+        fillColor: Color(0xFFFDA4BA).withOpacity(0.35),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
@@ -163,6 +166,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
           child: Column(
             children: [
               // Toggle buttons for Expense and Income
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -176,8 +180,8 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
 
 // Form Card with gradient
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
+                child: SingleChildScrollView(
+                  /*decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
                         Color(0xFFFFDBE9),
@@ -187,11 +191,12 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-                  ),
+                  ),*/
                   child: Card(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
+
                     ),
                     color: Colors.transparent, // Set the card color to transparent
                     child: Padding(
@@ -208,6 +213,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             ),
                           ),
                           const Divider(color: Color(0xFF003366)), // Divider color to match the theme
+                          SizedBox(height: 10),
                           _buildFormField(
                             controller: _titleController,
                             label: 'Title',
@@ -222,27 +228,33 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           ),
                           const SizedBox(height: 20),
                           DropdownButtonFormField<String>(
+
                             value: _selectedCategory,
-                            decoration: InputDecoration(
-                              labelText: 'Category',
-                              labelStyle: TextStyle(color: Color(0xFF003366)), // Dark blue label
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            items: (_isExpense ? _expenseCategories : _incomeCategories)
-                                .map((category) {
-                              return DropdownMenuItem<String>(
-                                value: category,
-                                child: Text(category),
-                              );
-                            }).toList(),
                             onChanged: (value) {
                               setState(() {
                                 _selectedCategory = value;
                               });
                             },
-                            isExpanded: true,
+
+                            decoration: InputDecoration(
+                              labelText: 'Category',
+                              labelStyle: TextStyle(color: Color(0xFF003366)), // Dark blue label
+                              filled: true, // To fill the background with color
+                              fillColor: Color(0xFFFDA4BA).withOpacity(0.35),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+                              ),
+                            ),
+                            dropdownColor: Color(0xFFE6D8FF),
+
+                            items: (_isExpense ? _expenseCategories : _incomeCategories)
+                                .map((category) =>
+                              DropdownMenuItem<String>(
+                                value: category,
+                                child: Text(category),
+                              )
+                            ).toList(),
                           ),
                           const SizedBox(height: 20),
                           _buildFormField(
@@ -261,15 +273,22 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             onTap: () => _selectTime(context),
                           ),
                           const SizedBox(height: 20),
+
+
+
                           DropdownButtonFormField<String>(
                             value: _modeOfPayment,
                             decoration: InputDecoration(
                               labelText: 'Payment Mode',
-                              labelStyle: TextStyle(color: Color(0xFF003366)), // Dark blue label
+                              labelStyle: TextStyle(color: Color(0xFF003366)),
+                              filled: true, // To fill the background with color
+                              fillColor: Color(0xFFFDA4BA).withOpacity(0.35),// Dark blue label
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                               ),
                             ),
+                            dropdownColor: Color(0xFFEDD4FF),
                             items: ['UPI', 'Cash', 'Credit', 'Debit', 'Net Banking', 'Vouchers', 'Other']
                                 .map((mode) {
                               return DropdownMenuItem<String>(

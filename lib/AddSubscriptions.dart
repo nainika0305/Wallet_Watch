@@ -108,71 +108,144 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add New Subscription'),
+        title: const Text('Add New Subscription',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black,
+          ),),
         centerTitle: true,
         elevation: 0,
+        backgroundColor: Color(0xFF3B8EF3).withOpacity(0.9),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
+        decoration: const BoxDecoration(
+        gradient: LinearGradient(
+
+        colors: [
+          Color(0xFFFFDBE9),
+          Color(0xFFE6D8FF), // Very light lavender
+          Color(0xFFBDE0FE), // Very light blue
+          ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        ),
+        ),
+      child:Padding(
+        padding: const EdgeInsets.all(19.0),
         child: Column(
           children: [
             // Form for adding subscription
             Card(
               elevation: 8,
+              color: Color(0xFFBDE0FE).withOpacity(0.65),
+              borderOnForeground: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(19.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Divider(),
+                    SizedBox(height: 10),
+
+                    const Text(
+                      'Subscription Details',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF003366), // Dark blue for contrast
+                      ),
+                    ),
+                    const Divider(color: Color(0xFF003366)), // Divider color to match the theme
+                    SizedBox(height: 16),
+
                     TextField(
                       controller: _platformController,
                       decoration: InputDecoration(
                         labelText: 'Platform (e.g., Netflix, Spotify)',
+                        prefixIcon: const Icon(Icons.computer_rounded),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
+
+
                     TextField(
                       controller: _amountController,
                       decoration: InputDecoration(
                         labelText: 'Monthly Amount',
-                        prefixIcon: const Icon(Icons.attach_money),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        prefixIcon: const Icon(Icons.money),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                         ),
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
+
+
                     TextField(
                       controller: _startDateController,
                       readOnly: true,
                       decoration: InputDecoration(
                         labelText: 'Start Date',
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
                         prefixIcon: const Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                         ),
                       ),
                       onTap: () => _selectStartDate(context),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
+
+
                     TextField(
                       controller: _noteController,
+                      style: TextStyle(
+                        color: Colors.black87, // Set the text color here
+                       fontWeight: FontWeight.bold,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'Note (Optional)',
+                        prefixIcon: const Icon(Icons.note),
+                        labelStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF003366),
+                        ),
+                        filled: true,
+                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                         ),
                       ),
+
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
 
                     // add button
 
@@ -181,7 +254,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                       child: ElevatedButton(
                         onPressed: _addSubscription,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
+                          backgroundColor: const Color(0xFF3B8EF3),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -189,10 +262,13 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                         ),
                         child: const Text(
                           'Add Subscription',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold,color: Colors.white),
                         ),
+
                       ),
+
                     ),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
@@ -200,6 +276,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
             const SizedBox(height: 20),
           ],
         ),
+      ),
       ),
     );
   }
