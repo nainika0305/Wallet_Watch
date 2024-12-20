@@ -105,15 +105,7 @@ class _ProfileState extends State<Profile> {
                 _signOut();
               },
             ),
-            _buildButtonRow(
-              title: 'Tax Estimation Tool',
-              colors: [Colors.deepPurple, Colors.deepPurpleAccent],
-              icon: Icons.calculate,
-              alignment: Alignment.centerRight,
-              onTap: () {
-                Navigator.pushNamed(context, '/tax');
-              },
-            ),
+
             _buildButtonRow(
               title: 'FAQs',
               colors: [Colors.green, Colors.lightGreenAccent],
