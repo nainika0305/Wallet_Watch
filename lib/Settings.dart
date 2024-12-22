@@ -22,12 +22,16 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
-        backgroundColor: const Color(0xFFCDB4DB), // Soft lavender tone
+        backgroundColor: _isDarkMode
+            ? const Color(0xFF2C2C2C) // Dark grey for dark mode
+            : const Color(0xFFCDB4DB), // Soft lavender tone for light mode
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFBDE0FE), Color(0xFFFFC8DD)], // Sky blue to pink gradient
+            colors: _isDarkMode
+                ? [Colors.black87, Colors.grey] // Dark gradient for dark mode
+                : [Color(0xFFBDE0FE), Color(0xFFFFC8DD)], // Sky blue to pink gradient for light mode
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -42,16 +46,18 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black, // Black font color for title
                 ),
               ),
               const SizedBox(height: 20),
 
               // Dark Mode Toggle
               SwitchListTile(
-                title: const Text(
+                title: Text(
                   'Dark Mode',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: _isDarkMode ? Colors.white : Colors.black87,
+                  ),
                 ),
                 value: _isDarkMode,
                 onChanged: (bool value) {
@@ -61,20 +67,26 @@ class _SettingsState extends State<Settings> {
                 },
                 secondary: Icon(
                   _isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                  color: const Color(0xFFFFAFCC), // Vibrant rose pink
+                  color: _isDarkMode ? Colors.white : Color(0xFFFFAFCC),
                 ),
               ),
               const SizedBox(height: 10),
 
               // Font Size Slider
               ListTile(
-                title: const Text(
+                title: Text(
                   'Font Size',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: _isDarkMode ? Colors.white : Colors.black87,
+                  ),
                 ),
                 subtitle: Text(
                   'Current Font Size: ${_fontSize.toStringAsFixed(1)}',
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
                 ),
                 trailing: SizedBox(
                   width: 150,
@@ -87,7 +99,7 @@ class _SettingsState extends State<Settings> {
                         _fontSize = value;
                       });
                     },
-                    activeColor: const Color(0xFFBDE0FE), // Sky blue
+                    activeColor: _isDarkMode ? Colors.white : const Color(0xFFBDE0FE),
                   ),
                 ),
               ),
@@ -95,13 +107,19 @@ class _SettingsState extends State<Settings> {
 
               // Font Selection Dropdown
               ListTile(
-                title: const Text(
+                title: Text(
                   'Font Family',
-                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: _isDarkMode ? Colors.white : Colors.black87,
+                  ),
                 ),
                 subtitle: Text(
                   'Selected Font: $_selectedFont',
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
                 ),
                 trailing: SizedBox(
                   width: 150,
@@ -115,7 +133,12 @@ class _SettingsState extends State<Settings> {
                     items: _fonts
                         .map((font) => DropdownMenuItem(
                       value: font,
-                      child: Text(font),
+                      child: Text(
+                        font,
+                        style: TextStyle(
+                          color: _isDarkMode ? Colors.white : Colors.black87,
+                        ),
+                      ),
                     ))
                         .toList(),
                   ),
@@ -129,31 +152,39 @@ class _SettingsState extends State<Settings> {
                   children: [
                     _buildButton(
                       label: 'Privacy Policy',
-                      color: const Color(0xFFCDB4DB), // Soft lavender tone
+                      color: _isDarkMode
+                          ? const Color(0xFF2C2C2C) // Dark grey for dark mode
+                          : const Color(0xFFCDB4DB), // Soft lavender tone for light mode
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const TermsAndConditions()),
+                            builder: (context) => const TermsAndConditions(),
+                          ),
                         );
                       },
                     ),
                     const SizedBox(height: 20),
                     _buildButton(
                       label: 'Forgot Password',
-                      color: const Color(0xFFFFC8DD), // Light pinkish shade
+                      color: _isDarkMode
+                          ? const Color(0xFF2C2C2C) // Dark grey for dark mode
+                          : const Color(0xFFFFC8DD), // Light pinkish shade for light mode
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ForgotPasswordPage()),
+                            builder: (context) => const ForgotPasswordPage(),
+                          ),
                         );
                       },
                     ),
                     const SizedBox(height: 20),
                     _buildButton(
                       label: 'Reset to Default Settings',
-                      color: const Color(0xFFFFAFCC), // Vibrant rose pink
+                      color: _isDarkMode
+                          ? const Color(0xFF2C2C2C) // Dark grey for dark mode
+                          : const Color(0xFFFFAFCC), // Vibrant rose pink for light mode
                       onPressed: () {
                         setState(() {
                           _isDarkMode = false;
@@ -193,7 +224,12 @@ class _SettingsState extends State<Settings> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        child: Text(label),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: _isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
       ),
     );
   }

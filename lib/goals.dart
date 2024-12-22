@@ -69,7 +69,7 @@ class _GoalsPageState extends State<GoalsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Goals'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFBDE0FE),  // Updated color here
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,7 +81,7 @@ class _GoalsPageState extends State<GoalsPage> {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.teal,
+                color: Color(0xFF000000),  // Updated color here
               ),
               textAlign: TextAlign.center,
             ),
@@ -98,7 +98,7 @@ class _GoalsPageState extends State<GoalsPage> {
                       labelText: 'Goal Title',
                       hintText: 'Enter your goal title',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),  // Slightly rounded corners
                       ),
                     ),
                     validator: (value) {
@@ -116,7 +116,7 @@ class _GoalsPageState extends State<GoalsPage> {
                       labelText: 'Goal Description',
                       hintText: 'Describe your goal',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),  // Slightly rounded corners
                       ),
                     ),
                     validator: (value) {
@@ -130,15 +130,19 @@ class _GoalsPageState extends State<GoalsPage> {
                   ElevatedButton(
                     onPressed: _addGoal,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      foregroundColor: Colors.black, backgroundColor: const Color(0xFFBDE0FE),  // Text color to black
+                      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),  // Bigger button
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(15),  // Slightly rounded corners
                       ),
+                      elevation: 5,  // Add elevation for shadow
                     ),
                     child: const Text(
                       'Add Goal',
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
