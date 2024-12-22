@@ -16,6 +16,46 @@ The main goal of **Wallet Watch** is to provide an all-in-one solution for perso
 - 💸 Track loans and monitor progress.
 ---
 
+## Tech Stack
+
+### Frontend
+- **Language**: Dart
+- **Framework**: Flutter
+- **State Management**: Provider
+- **UI/UX**: 
+  - Custom gradients, animations using `Hero`, `AnimatedContainer`
+- **Libraries**:
+  - `fl_chart`: Data visualization
+  - `flutter_colorpicker`: Color selection for UI
+  - `intl`: Internationalization (Date, Currency formatting)
+  
+### Backend
+- **Database**: Firebase Firestore
+- **Authentication**: Firebase Authentication (Email/Password)
+
+### API Integrations
+- **Currency Conversion**: ExchangeRate API for real-time currency conversion
+
+### Dependencies
+- **Core Libraries**:
+  - `firebase_core`: Firebase initialization
+  - `firebase_auth`: Firebase Authentication
+  - `cloud_firestore`: Firebase Firestore (for transactions, budgets, feedback)
+  - `http`: HTTP requests for external APIs
+
+### Dev Tools
+- **Testing**: `flutter_test`
+- **Linting**: `flutter_lints`
+
+### Platform
+- **Android**: `google-services.json`
+
+### Version Control
+- **Git**: GitHub for code management
+
+
+---
+
 ## Features
 ### User Authentication
 - 🔒 **Secure Login** : Email/password authentication powered by Firebase Authentication ensures data privacy and secure access.  
