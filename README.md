@@ -9,12 +9,94 @@
 ## Goal :dart: 
 
 The main goal of **Wallet Watch** is to provide an all-in-one solution for personal finance management, allowing users to:
-- 👤 **Maintain a personal profile** to track financial goals and details.
-- 📊 **Track income and expenses.**
-- 💰 **Set budgets for different categories.**
-- 📅 **Manage recurring subscriptions** and track payments like insurance.
-- 💸 **Track loans** and monitor progress.
+- 👤 Maintain a personal profile to track financial goals and details.
+- 📊 Track income and expenses.
+- 💰 Set budgets for different categories.
+- 📅 Manage recurring subscriptions and track payments like insurance.
+- 💸 Track loans and monitor progress.
 ---
+
+## Features
+### User Authentication
+- 🔒 **Secure Login** : Email/password authentication powered by Firebase Authentication ensures data privacy and secure access.  
+- 🔑 **Password Recovery** : Option to reset forgotten passwords via email to regain access easily.  
+- 🕒 **Persistent Sessions** : Automatically remembers user sessions until they log out, reducing the need for repeated logins.  
+
+### Transactions Management
+- ✏️ **Add and Edit Transactions** : Easily add, edit, or delete income and expense entries.  
+- 🗂️ **Categorization** : Transactions are categorized into predefined or custom categories like Food, Transport, Shopping, etc.  
+- 🔍 **Search and Filters** :  
+  - Filter transactions by income, expense, or category.  
+  - Sort transactions by date, amount, or mode of payment (e.g., UPI, cash, card).  
+- 🔄 **Recurring Transactions** : Supports subscriptions or recurring expenses, organized by title for easy management.  
+- 📊 **Loans Tracking** : Displays loan progress with repayment schedules.  
+
+### Budget Management  
+- 📂 **Category-wise Budgets** : Set monthly budgets for different spending categories like Food, Transport, Entertainment, etc.  
+- 📈 **Progress Visualization** :  
+  - Displays a progress bar indicating the funds allocated and remaining.  
+  - Shows the daily spendable amount or required savings based on current progress.  
+  - Color-coded progress bars as chosen by the user to make it visually appealing.  
+- 💾 **Budget History** : Keeps a log of past budgets and performance for review and planning.  
+
+### Home Page  
+- 📊 **Summary View** :  
+  - Displays total income, expenses, and savings for the selected time period.  
+  - Highlights top spending categories and trends with bar graphs.   
+- 🔄 **Real-Time Data Updates** : Automatically refreshes to provide up-to-date information on finances.  
+- 🔍 **Spending Breakdown** : Offers detailed views of each spending category and trends for easy analysis.  
+- 💡 **Financial Tips** : Displays financial tips to encourage better money management.  
+
+### Profile Management  
+- ⚙️ **User Settings** :  
+  - Enable dark mode or choose from available themes for a personalized experience.  
+  - Update profile details like name, email, and preferred language.  
+- 📝 **Feedback** :  
+  - Built-in section to gather user feedback to improve user experience.  
+- ❓ **FAQs** :  
+  - Provides answers to common user queries, offering quick solutions and improving app usability.  
+- 👤 **Profile Card** :  
+  - Displays user information such as name, email, and initials (generated from the user’s first and last name).  
+  - Shows a profile with the user’s initials.  
+- 🖼️ **Dynamic Profile Display** :  
+  - The profile section dynamically fetches user details from Firebase Firestore and updates in real time.  
+- 🔑 **Secure Log-Out** :  
+  - Log-out functionality that logs the user out from Firebase authentication, ensuring secure session management.  
+- 🔄 **Automatic Profile Updates** :  
+  - The profile data (name, email, initials) is automatically updated if any changes are made on Firestore, ensuring up-to-date information.  
+
+### Currency Conversion  
+- 💵 **Amount Input** :  
+  - Users can input the amount they want to convert using a numeric keypad.  
+  - Automatically triggers conversion when the input changes.  
+- 🌍 **From Currency Dropdown** :  
+  - Choose the source currency from a predefined list of 20 major currencies, including USD, EUR, INR, GBP, and others.  
+  - Fetches the latest exchange rates dynamically based on the selected "from" currency.  
+- 💱 **To Currency Dropdown** :  
+  - Select the target currency to convert the amount into, from the same predefined list of currencies.  
+- 🔄 **Currency Conversion** :  
+  - Converts the entered amount from the source currency to the target currency using real-time exchange rates fetched from the API.  
+  - Displays the converted amount to two decimal places for clarity.  
+- 🧮 **Real-Time Exchange Rates** :  
+  - Fetches the latest exchange rates from a reliable external API (ExchangeRate API) for accurate conversion.  
+- ⏳ **Refresh Rates** :  
+  - A refresh button to fetch the most up-to-date exchange rates whenever required.  
+  - Ensures that users always have access to the most accurate and current conversion rates.  
+- 🔄 **Automatic Conversion on Changes** :  
+  - Automatically updates the conversion result when the source currency or target currency is changed.  
+  - Updates conversion in real-time when the amount is modified.
+
+### Visual Enhancements  
+- 🎬 **Animations** :  
+  - Smooth transitions between screens, improving the user experience.  
+  - Utilizes Flutter's animation widgets like Hero and AnimatedContainer for seamless, visually appealing navigation.  
+- 🎨 **Gradients and Colors** :  
+  - Contemporary gradient designs and color schemes used throughout the app to create a visually dynamic and engaging interface.  
+  - Colors are selected to enhance usability while maintaining a cohesive and visually pleasing aesthetic.
+
+---
+
+
 
 ## Running the Project
 
@@ -88,6 +170,13 @@ We are the team behind **Wallet Watch**, focused on providing an intuitive solut
 
 ---
 
+## Future Enhancements  
+- ☁️ **Backup and Sync** :  
+  - Automatic cloud syncing of data via Firebase Firestore, ensuring data availability across multiple devices.  
+- 🔔 **Notifications** :  
+  - Sends timely reminders for due payments, upcoming subscriptions, or overspending warnings to keep users informed.  
+- 📤 **Export Options** :  
+  - Users can export their transaction history and budget details in PDF or Excel formats for better reporting and tracking.
 
 
 

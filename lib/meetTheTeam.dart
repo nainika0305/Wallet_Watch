@@ -55,10 +55,10 @@ class MeetTheTeamPage extends StatelessWidget {
             children: [
               const SizedBox(height: 20), // Spacing between content
 
-              // Container for the app logo
+              // Container for the app logo (increased size)
               Container(
-                height: 100, // Height of the logo
-                width: 100, // Width of the logo
+                height: 140, // Increased height of the logo
+                width: 140, // Increased width of the logo
                 decoration: BoxDecoration(
                   shape: BoxShape.circle, // Circular shape for the logo
                   image: DecorationImage(
@@ -75,7 +75,7 @@ class MeetTheTeamPage extends StatelessWidget {
                 'We are the team behind the Wallet Watch app, a finance tracker designed to help you manage your expenses and savings. Our goal was to create an easy-to-use tool that helps users track their financial activities and make informed decisions. The app allows users to track their expenses, income, and set budgets. It also provides useful insights through graphs and financial tips.',
                 style: TextStyle(
                   fontSize: 16, // Font size of the description
-                  color: Colors.white, // White color for the text
+                  color: Color(0xFF4F6F7A), // Muted dark teal text color
                   height: 1.5, // Line height for readability
                 ),
                 textAlign: TextAlign.center, // Center align the text

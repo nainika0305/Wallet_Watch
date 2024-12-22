@@ -66,7 +66,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Profile'),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFCDB4DB), // Soft lavender
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
@@ -77,10 +77,10 @@ class _ProfileState extends State<Profile> {
 
             const SizedBox(height: 30.0),
 
-            // Existing buttons
+            // Existing buttons with darkened text
             _buildButtonRow(
               title: 'Settings',
-              colors: [Colors.teal, Colors.greenAccent],
+              colors: [const Color(0xFFCDB4DB), const Color(0xFFE4DFED)], // Soft lavender + light pinkish
               icon: Icons.settings,
               alignment: Alignment.centerLeft,
               onTap: () {
@@ -89,54 +89,29 @@ class _ProfileState extends State<Profile> {
             ),
             _buildButtonRow(
               title: 'Feedback/Rate',
-              colors: [Colors.purpleAccent, Colors.blue],
+              colors: [const Color(0xFFFFC8DD), const Color(0xFFFFAFCC)], // Light pink + vibrant rose pink
               icon: Icons.feedback,
               alignment: Alignment.centerRight,
               onTap: () {
                 Navigator.pushNamed(context, '/feedback');
               },
             ),
-            _buildButtonRow(
-              title: 'Log Out',
-              colors: [Colors.red, Colors.orange],
-              icon: Icons.logout,
-              alignment: Alignment.centerLeft,
-              onTap: () {
-                _signOut();
-              },
-            ),
-            _buildButtonRow(
-              title: 'Tax Estimation Tool',
-              colors: [Colors.deepPurple, Colors.deepPurpleAccent],
-              icon: Icons.calculate,
-              alignment: Alignment.centerRight,
-              onTap: () {
-                Navigator.pushNamed(context, '/tax');
-              },
-            ),
+
+
             _buildButtonRow(
               title: 'FAQs',
-              colors: [Colors.green, Colors.lightGreenAccent],
+              colors: [const Color(0xFFBDE0FE), const Color(0xFFA2D2FF)], // Sky blue + periwinkle blue
               icon: Icons.question_answer,
               alignment: Alignment.centerLeft,
               onTap: () {
                 Navigator.pushNamed(context, '/faqs');
               },
             ),
-            _buildButtonRow(
-              title: 'Currency Conversion',
-              colors: [Colors.indigo, Colors.cyan],
-              icon: Icons.swap_horiz,
-              alignment: Alignment.centerRight,
-              onTap: () {
-                Navigator.pushNamed(context, '/conversion');
-              },
-            ),
 
             // New Goals button
             _buildButtonRow(
               title: 'Goals',
-              colors: [Colors.orangeAccent, Colors.deepOrange],
+              colors: [const Color(0xFFFFAFCC), const Color(0xFFFFC8DD)], // Vibrant rose pink + light pink
               icon: Icons.flag,
               alignment: Alignment.centerLeft,
               onTap: () {
@@ -147,9 +122,30 @@ class _ProfileState extends State<Profile> {
               },
             ),
             _buildButtonRow(
+              title: 'Currency Conversion',
+              colors: [const Color(0xFFBDE0FE), const Color(0xFFA2D2FF)], // Sky blue + periwinkle blue
+              icon: Icons.swap_horiz,
+              alignment: Alignment.centerRight,
+              onTap: () {
+                Navigator.pushNamed(context, '/conversion');
+              },
+            ),
+
+
+
+            _buildButtonRow(
+              title: 'Log Out',
+              colors: [const Color(0xFFFFC8DD), const Color(0xFFFFAFCC)], // Light pink + vibrant rose pink
+              icon: Icons.logout,
+              alignment: Alignment.centerLeft,
+              onTap: () {
+                _signOut();
+              },
+            ),
+            _buildButtonRow(
               title: 'Meet the Team',
-              colors: [Colors.orangeAccent, Colors.deepOrange],
-              icon: Icons.flag,
+              colors: [const Color(0xFFFFAFCC), const Color(0xFFFFC8DD)], // Vibrant rose pink + light pink
+              icon: Icons.group,
               alignment: Alignment.centerLeft,
               onTap: () {
                 Navigator.push(
@@ -169,7 +165,7 @@ class _ProfileState extends State<Profile> {
     return Card(
       elevation: 5.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      color: Colors.teal.shade50,
+      color: const Color(0xFFCDB4DB), // Soft lavender
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -177,7 +173,7 @@ class _ProfileState extends State<Profile> {
             // User Avatar with initials
             CircleAvatar(
               radius: 40.0,
-              backgroundColor: Colors.teal, // Set background color for contrast
+              backgroundColor: const Color(0xFFFFC8DD), // Light pinkish for contrast
               child: Text(
                 initials, // Display the initials
                 style: const TextStyle(
@@ -197,7 +193,7 @@ class _ProfileState extends State<Profile> {
                   style: const TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Colors.black87, // Darkened text for visibility
                   ),
                 ),
                 const SizedBox(height: 8.0),
@@ -205,7 +201,7 @@ class _ProfileState extends State<Profile> {
                   user.email ?? 'Email not available',
                   style: const TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black54,
+                    color: Colors.black87, // Darker email color for contrast
                   ),
                 ),
               ],
@@ -216,7 +212,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  // Enhanced Button Row
+  // Enhanced Button Row with darker text
   Widget _buildButtonRow({
     required String title,
     required List<Color> colors,
@@ -261,7 +257,7 @@ class _ProfileState extends State<Profile> {
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.black87, // Darkened text color for better contrast
                     ),
                     textAlign: TextAlign.center,
                   ),
