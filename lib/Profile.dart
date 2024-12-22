@@ -144,7 +144,7 @@ class _ProfileState extends State<Profile> {
             ),
             _buildButtonRow(
               title: 'Meet the Team',
-              colors: [const Color(0xFFFFAFCC), const Color(0xFFFFC8DD)], // Vibrant rose pink + light pink
+              colors: [const Color(0xFFCDB4DB), const Color(0xFFE4DFED)], // Vibrant rose pink + light pink
               icon: Icons.group,
               alignment: Alignment.centerLeft,
               onTap: () {

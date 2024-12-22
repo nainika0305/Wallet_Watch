@@ -22,136 +22,179 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFCDB4DB), // Soft lavender tone
       ),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFBDE0FE), Color(0xFFFFC8DD)], // Sky blue to pink gradient
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Customize Your Settings',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.teal,
-              ),
-            ),
-            const SizedBox(height: 30),
-
-            // Dark Mode Toggle
-            SwitchListTile(
-              title: const Text('Dark Mode'),
-              value: _isDarkMode,
-              onChanged: (bool value) {
-                setState(() {
-                  _isDarkMode = value;
-                });
-              },
-              secondary: Icon(
-                _isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                color: Colors.teal,
-              ),
-            ),
-
-            // Font Size Slider
-            ListTile(
-              title: const Text('Font Size'),
-              subtitle: Text('Current Font Size: ${_fontSize.toStringAsFixed(1)}'),
-              trailing: SizedBox(
-                width: 150,
-                child: Slider(
-                  min: 12,
-                  max: 24,
-                  value: _fontSize,
-                  onChanged: (value) {
-                    setState(() {
-                      _fontSize = value;
-                    });
-                  },
-                  activeColor: Colors.teal,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Customize Your Settings',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black, // Black font color for title
                 ),
               ),
-            ),
+              const SizedBox(height: 20),
 
-            // Font Selection Dropdown
-            ListTile(
-              title: const Text('Font Family'),
-              subtitle: Text('Selected Font: $_selectedFont'),
-              trailing: SizedBox(
-                width: 150,
-                child: DropdownButton<String>(
-                  value: _selectedFont,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedFont = newValue!;
-                    });
-                  },
-                  items: _fonts
-                      .map((font) => DropdownMenuItem(
-                    value: font,
-                    child: Text(font),
-                  ))
-                      .toList(),
+              // Dark Mode Toggle
+              SwitchListTile(
+                title: const Text(
+                  'Dark Mode',
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                ),
+                value: _isDarkMode,
+                onChanged: (bool value) {
+                  setState(() {
+                    _isDarkMode = value;
+                  });
+                },
+                secondary: Icon(
+                  _isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                  color: const Color(0xFFFFAFCC), // Vibrant rose pink
                 ),
               ),
-            ),
+              const SizedBox(height: 10),
 
-            // Privacy Policy Button
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TermsAndConditions()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 16),
+              // Font Size Slider
+              ListTile(
+                title: const Text(
+                  'Font Size',
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                ),
+                subtitle: Text(
+                  'Current Font Size: ${_fontSize.toStringAsFixed(1)}',
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                trailing: SizedBox(
+                  width: 150,
+                  child: Slider(
+                    min: 12,
+                    max: 24,
+                    value: _fontSize,
+                    onChanged: (value) {
+                      setState(() {
+                        _fontSize = value;
+                      });
+                    },
+                    activeColor: const Color(0xFFBDE0FE), // Sky blue
+                  ),
+                ),
               ),
-              child: const Text('Privacy Policy'),
-            ),
+              const SizedBox(height: 10),
 
-            // Forgot Password Button
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ForgotPasswordPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple[200],
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 16),
+              // Font Selection Dropdown
+              ListTile(
+                title: const Text(
+                  'Font Family',
+                  style: TextStyle(fontSize: 18, color: Colors.black87),
+                ),
+                subtitle: Text(
+                  'Selected Font: $_selectedFont',
+                  style: const TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                trailing: SizedBox(
+                  width: 150,
+                  child: DropdownButton<String>(
+                    value: _selectedFont,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedFont = newValue!;
+                      });
+                    },
+                    items: _fonts
+                        .map((font) => DropdownMenuItem(
+                      value: font,
+                      child: Text(font),
+                    ))
+                        .toList(),
+                  ),
+                ),
               ),
-              child: const Text('Forgot Password'),
-            ),
+              const SizedBox(height: 20),
 
-            // Reset Settings Button
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _isDarkMode = false;
-                  _selectedFont = 'Roboto';
-                  _fontSize = 16.0;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle: const TextStyle(fontSize: 16),
+              // Buttons Section
+              Center(
+                child: Column(
+                  children: [
+                    _buildButton(
+                      label: 'Privacy Policy',
+                      color: const Color(0xFFCDB4DB), // Soft lavender tone
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TermsAndConditions()),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _buildButton(
+                      label: 'Forgot Password',
+                      color: const Color(0xFFFFC8DD), // Light pinkish shade
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordPage()),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _buildButton(
+                      label: 'Reset to Default Settings',
+                      color: const Color(0xFFFFAFCC), // Vibrant rose pink
+                      onPressed: () {
+                        setState(() {
+                          _isDarkMode = false;
+                          _selectedFont = 'Roboto';
+                          _fontSize = 16.0;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
-              child: const Text('Reset to Default Settings'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       backgroundColor: _isDarkMode ? Colors.black : Colors.white,
+    );
+  }
+
+  Widget _buildButton({
+    required String label,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        child: Text(label),
+      ),
     );
   }
 }
