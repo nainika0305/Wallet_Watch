@@ -8,9 +8,10 @@ class FAQs extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('FAQs'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFCDB4DB), // Soft Lavender
       ),
-      body: Padding(
+      body: Container(
+        color: const Color(0xFFF9F9F9), // Slightly darker than white (light gray)
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
@@ -20,7 +21,7 @@ class FAQs extends StatelessWidget {
               question: 'What is compound interest?',
               answer:
               'Compound interest is the interest on a loan or deposit that is calculated based on both the initial principal and the accumulated interest from previous periods.',
-              color: Colors.blue,
+              color: const Color(0xFFCDB4DB), // Soft Lavender
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -29,7 +30,7 @@ class FAQs extends StatelessWidget {
               question: 'How do I create an emergency fund?',
               answer:
               'Start by saving 3-6 months of living expenses in a separate account. Focus on cutting non-essential expenses to build your fund faster.',
-              color: Colors.green,
+              color: const Color(0xFFFFC8DD), // Light Pinkish
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -38,7 +39,7 @@ class FAQs extends StatelessWidget {
               question: 'What are the risks of investing in the stock market?',
               answer:
               'The stock market is volatile, and prices can fluctuate dramatically. Risks include market crashes, poor company performance, and changes in economic conditions.',
-              color: Colors.red,
+              color: const Color(0xFFFFAFCC), // Vibrant Rose Pink
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -47,7 +48,7 @@ class FAQs extends StatelessWidget {
               question: 'What is the 50/30/20 rule in budgeting?',
               answer:
               'The 50/30/20 rule suggests that you allocate 50% of your income to needs, 30% to wants, and 20% to savings or debt repayment.',
-              color: Colors.blueAccent,
+              color: const Color(0xFFBDE0FE), // Sky Blue
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -56,7 +57,7 @@ class FAQs extends StatelessWidget {
               question: 'What is financial independence?',
               answer:
               'Financial independence means having enough income to cover your living expenses without relying on active employment, usually achieved through savings and investments.',
-              color: Colors.purple,
+              color: const Color(0xFFA2D2FF), // Periwinkle Blue
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -65,7 +66,7 @@ class FAQs extends StatelessWidget {
               question: 'Is renting or buying a home better?',
               answer:
               'It depends on your financial situation. Buying can build equity, but renting offers flexibility. Consider your long-term goals, maintenance costs, and market conditions.',
-              color: Colors.brown,
+              color: const Color(0xFFCDB4DB), // Soft Lavender
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -74,7 +75,7 @@ class FAQs extends StatelessWidget {
               question: 'How can I reduce my taxes legally?',
               answer:
               'Contribute to retirement accounts like 401(k)s and IRAs, take advantage of tax deductions, and consider tax-efficient investments to reduce your taxable income.',
-              color: Colors.cyan,
+              color: const Color(0xFFFFC8DD), // Light Pinkish
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -83,7 +84,7 @@ class FAQs extends StatelessWidget {
               question: 'What is a credit score?',
               answer:
               'A credit score is a numerical representation of your creditworthiness, typically ranging from 300 to 850. It affects your ability to borrow money and the interest rates you’ll receive.',
-              color: Colors.indigo,
+              color: const Color(0xFFFFAFCC), // Vibrant Rose Pink
             ),
             const SizedBox(height: 16),
             _buildFAQItem(
@@ -92,7 +93,7 @@ class FAQs extends StatelessWidget {
               question: 'What is the importance of diversification in investing?',
               answer:
               'Diversification spreads your investments across different asset classes to reduce risk. It helps minimize the impact of any single investment’s poor performance on your overall portfolio.',
-              color: Colors.teal,
+              color: const Color(0xFFBDE0FE), // Sky Blue
             ),
           ],
         ),
@@ -110,6 +111,7 @@ class FAQs extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
+      color: color, // Card background color set to the provided shades
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -130,10 +132,10 @@ class FAQs extends StatelessWidget {
                 Expanded(
                   child: Text(
                     question,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: color,
+                      color: Colors.black, // Text color set to black
                     ),
                   ),
                 ),
@@ -144,7 +146,7 @@ class FAQs extends StatelessWidget {
               answer,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.black87,
+                color: Colors.black, // Text color set to black
               ),
             ),
           ],

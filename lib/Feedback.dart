@@ -52,7 +52,7 @@ class _reviewState extends State<review> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Submit Feedback'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +66,7 @@ class _reviewState extends State<review> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: Color(0xFF000000), // Changed the color here
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -130,7 +130,7 @@ class _reviewState extends State<review> {
                     onPressed: _submitFeedback,
                     child: const Text('Submit Feedback'),
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: Colors.teal,
+                      padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color(0xFFBDE0FE), // Changed the color here
                       textStyle: const TextStyle(fontSize: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),

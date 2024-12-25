@@ -65,7 +65,7 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Currency Converter'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,7 +73,8 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
           children: [
             const Text(
               'Currency Converter',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.teal),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(
+                  0xFF000000)),  // Changed the color here
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
@@ -134,7 +135,7 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
             if (_convertedAmount != null)
               Text(
                 'Converted Amount: ${_convertedAmount!.toStringAsFixed(2)} $_toCurrency',
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.teal),
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFBDE0FE)),  // Changed the color here
                 textAlign: TextAlign.center,
               ),
             const SizedBox(height: 20),
@@ -144,7 +145,7 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
               onPressed: _fetchExchangeRates,
               child: const Text('Refresh Rates'),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
                 textStyle: const TextStyle(fontSize: 16),
               ),
             ),

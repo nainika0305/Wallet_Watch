@@ -12,7 +12,6 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-
 class _HomeState extends State<Home> {
   final userId = FirebaseAuth.instance.currentUser!.email; // user id
 
@@ -35,7 +34,6 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchTotalMoney() async {
     try {
-      // Listen to real-time updates for the user's totalMoney field
       FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -45,8 +43,6 @@ class _HomeState extends State<Home> {
           setState(() {
             totalMoney = (docSnapshot.data()?['totalMoney'] ?? 0).toDouble();
           });
-        } else {
-          print("Document does not exist");
         }
       });
     } catch (e) {
@@ -54,7 +50,69 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // for printing
+  Future<void> _fetchGraphData() async {
+    try {
+      QuerySnapshot query = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .where('date', isGreaterThanOrEqualTo: fromDate)
+          .where('date', isLessThanOrEqualTo: toDate)
+          .get();
+
+      List<Map<String, dynamic>> transactions =
+      query.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+
+      Map<String, double> incomeData = {};
+      Map<String, double> expenseData = {};
+
+      for (var transaction in transactions) {
+        DateTime transactionDate;
+        if (transaction['date'] is String) {
+          transactionDate = DateTime.parse(transaction['date']);
+        } else {
+          transactionDate = (transaction['date'] as Timestamp).toDate();
+        }
+
+        String dateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
+        double amount = transaction['amount'];
+
+        if (transaction['type'] == 'Income') {
+          incomeData[dateKey] = (incomeData[dateKey] ?? 0) + amount;
+        } else if (transaction['type'] == 'Expense') {
+          expenseData[dateKey] = (expenseData[dateKey] ?? 0) + amount;
+        }
+      }
+
+      List<DateTime> allDates = [];
+      for (var i = 0; i <= toDate.difference(fromDate).inDays; i++) {
+        allDates.add(fromDate.add(Duration(days: i)));
+      }
+
+      xAxisLabels = allDates.map((date) {
+        int day = date.day;
+        String suffix = getDaySuffix(day);
+        String formattedDate = DateFormat('d MMM').format(date);
+        return formattedDate.replaceFirst(day.toString(), '$day$suffix');
+      }).toList();
+
+      incomeSpots = _generateSpots(allDates, incomeData);
+      expenseSpots = _generateSpots(allDates, expenseData);
+
+      setState(() {});
+    } catch (e) {
+      print("Error fetching graph data: $e");
+    }
+  }
+
+  List<FlSpot> _generateSpots(List<DateTime> allDates, Map<String, double> data) {
+    return allDates.map((date) {
+      String dateKey = DateFormat('yyyy-MM-dd').format(date);
+      double amount = data[dateKey] ?? 0.0;
+      return FlSpot(date.day.toDouble(), amount);
+    }).toList();
+  }
+
   String getDaySuffix(int day) {
     if (day >= 11 && day <= 13) {
       return 'th';
@@ -69,76 +127,6 @@ class _HomeState extends State<Home> {
       default:
         return 'th';
     }
-  }
-
-  // display transactiosn
-  Future<void> _fetchGraphData() async {
-    try {
-      QuerySnapshot query = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('transactions')
-          .where('date', isGreaterThanOrEqualTo: fromDate)
-          .where('date', isLessThanOrEqualTo: toDate)
-          .get();
-
-      List<Map<String, dynamic>> transactions = query.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-
-      Map<String, double> incomeData = {};
-      Map<String, double> expenseData = {};
-
-      for (var transaction in transactions) {
-        // Ensure the date is properly parsed if it's a string
-        DateTime transactionDate;
-        if (transaction['date'] is String) {
-          transactionDate = DateTime.parse(transaction['date']);
-        } else {
-          // If it's already a Timestamp, convert it to DateTime
-          transactionDate = (transaction['date'] as Timestamp).toDate();
-        }
-
-        String dateKey = DateFormat('yyyy-MM-dd').format(transactionDate); // Format the date as key
-        double amount = transaction['amount'];
-
-        if (transaction['type'] == 'Income') {
-          incomeData[dateKey] = (incomeData[dateKey] ?? 0) + amount;
-        } else if (transaction['type'] == 'Expense') {
-          expenseData[dateKey] = (expenseData[dateKey] ?? 0) + amount;
-        }
-      }
-
-      print("income data, $incomeData");
-      print("expense data, $expenseData");
-
-      // Generate x-axis labels and map to FlSpot points
-      List<DateTime> allDates = [];
-      for (var i = 0; i <= toDate.difference(fromDate).inDays; i++) {
-        allDates.add(fromDate.add(Duration(days: i)));
-      }
-
-      xAxisLabels = allDates.map((date) {
-        int day = date.day;
-        String suffix = getDaySuffix(day);  // Ensure this function is correct
-        String formattedDate = DateFormat('d MMM').format(date);
-        return formattedDate.replaceFirst(day.toString(), '$day$suffix');
-      }).toList();
-
-      incomeSpots = _generateSpots(allDates, incomeData);
-      expenseSpots = _generateSpots(allDates, expenseData);
-
-      setState(() {});
-    } catch (e) {
-      print("Error fetching graph data: $e");
-    }
-  }
-
-// Helper function to generate spots
-  List<FlSpot> _generateSpots(List<DateTime> allDates, Map<String, double> data) {
-    return allDates.map((date) {
-      String dateKey = DateFormat('yyyy-MM-dd').format(date);
-      double amount = data[dateKey] ?? 0.0;
-      return FlSpot(date.day.toDouble(), amount);  // Use day as x-axis value
-    }).toList();
   }
 
   Future<void> _pickDateRange() async {
@@ -164,20 +152,19 @@ class _HomeState extends State<Home> {
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.pink[50]!, Colors.pink[100]!],
+          colors: [const Color(0xFFCDB4DB), const Color(0xFFBDE0FE)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.pink.withOpacity(0.2),
+            color: Colors.blue.withOpacity(0.2),
             blurRadius: 25,
             spreadRadius: 7,
           ),
         ],
       ),
-
       child: Column(
         children: [
           Row(
@@ -196,9 +183,9 @@ class _HomeState extends State<Home> {
                   value: type,
                   child: Text(
                     type,
-                    style: TextStyle(
-                      color: Colors.pink[300],
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
                 ))
@@ -207,191 +194,95 @@ class _HomeState extends State<Home> {
               ElevatedButton(
                 onPressed: _pickDateRange,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink[200],
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color(0xFFA2D2FF),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: const Text(
                   'Select Date Range',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
             child: LineChart(
-                LineChartData(
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          int index = value.toInt();
-                          if (index >= 0 && index < xAxisLabels.length) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                xAxisLabels[index],
-                                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
+              LineChartData(
+                gridData: FlGridData(show: false),
+                borderData: FlBorderData(show: true),
+                lineBarsData: [
+                  if (selectedGraphType == 'Combined' ||
+                      selectedGraphType == 'Income')
+                    LineChartBarData(
+                      spots: incomeSpots,
+                      color: Colors.green,
                     ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide left axis titles (y-axis)
+                  if (selectedGraphType == 'Combined' ||
+                      selectedGraphType == 'Expenses')
+                    LineChartBarData(
+                      spots: expenseSpots,
+                      color: Colors.red,
                     ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide top axis titles
-                    ),
-                  ),
-                  gridData: FlGridData(show: false), // Hide grid lines
-                  borderData: FlBorderData(show: true), // Optionally show the border
-                  lineBarsData: [
-                    if (selectedGraphType == 'Combined' || selectedGraphType == 'Income')
-                      LineChartBarData(
-                        spots: incomeSpots,
-                        isCurved: false,
-                        barWidth: 3,
-                        color: Colors.green,
-                      ),
-                    if (selectedGraphType == 'Combined' || selectedGraphType == 'Expenses')
-                      LineChartBarData(
-                        spots: expenseSpots,
-                        isCurved: false,
-                        barWidth: 3,
-                        color: Colors.red,
-                      ),
-                  ],
-                )
-
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildButton(String text, Widget page) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFFFC8DD),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 18),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
               motivationalQuote,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.pink[600]),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 20),
-            // Total Money Section
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.pink[300]!, Colors.pink[400]!],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(18),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.pink.withOpacity(0.3),
-                    blurRadius: 30,
-                    spreadRadius: 8,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    "Total Money",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "₹ ${totalMoney.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30),
             _buildGraph(),
             const SizedBox(height: 30),
-            // Compact Buttons and Neatly Aligned
-            Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Transactions()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor: Colors.pink[300],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
-                  ),
-                  child: const Text(
-                    "View Transactions",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Tips()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor: Colors.pink[200],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
-                  ),
-                  child: const Text(
-                    "Financial Tips",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddTransactionPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor: Colors.pink[100],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
-                  ),
-                  child: const Text(
-                    "Add Transaction",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
+            _buildButton("View Transactions", Transactions()),
+            _buildButton("Financial Tips", Tips()),
+            _buildButton("Add Transaction", AddTransactionPage()),
           ],
         ),
       ),
