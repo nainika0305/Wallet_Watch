@@ -90,11 +90,30 @@ class _InsuranceState extends State<Insurance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Insurance Policies'),
+        title: const Text('Insurance Policies',
+          style: TextStyle(
+            fontWeight: FontWeight.w600, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         centerTitle: true,
         elevation: 0,
+        backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
       ),
-            body: Column(
+
+    body: Container(
+    decoration: BoxDecoration(
+    gradient: LinearGradient(
+    colors: [
+    Color(0xFFFFDBE9),
+    Color(0xFFE6D8FF), // Very light lavender
+    Color(0xFFBDE0FE), // Very light blue
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    ),
+    ),
+
+    child:  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
        
@@ -126,7 +145,11 @@ class _InsuranceState extends State<Insurance> {
                       return Card(
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
-                          title: Text('${data['title']}, ${data['provider']}'),
+                          title: Text('${data['title']}, ${data['provider']}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF281E5D), // Dark blue for contrast
+                              )),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -156,15 +179,35 @@ class _InsuranceState extends State<Insurance> {
                 },
               ),
             ),
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/addInsurance');
+                    },
+                    icon: Icon(Icons.add, color: Colors.white,),
+                    label: Text('Add a policy',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 17,
+                        )),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
 
+                ],
+              ),
+              SizedBox(height: 12),
             ],
             ),
-           floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addInsurance');
-        },
-        child: const Icon(Icons.add),
-      ),
+    ),
     );
   }
 }

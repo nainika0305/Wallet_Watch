@@ -92,7 +92,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
         });
       },
       style: ElevatedButton.styleFrom(
-
         backgroundColor: isSelected ? (isExpense ? Colors.lightBlue: Colors.purple ) : Colors.grey,
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         shape: RoundedRectangleBorder(
