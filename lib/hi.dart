@@ -134,7 +134,10 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
       child: Ink(
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFFB392AC), Color(0xFFA084CA)], // Darker gradient colors
+            colors: [
+              Color(0xFFB392AC),
+              Color(0xFFA084CA)
+            ], // Darker gradient colors
             begin: Alignment.centerLeft, // Start gradient on the left
             end: Alignment.centerRight, // End gradient on the right
           ),
@@ -142,15 +145,22 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
         ),
         child: Container(
           alignment: Alignment.center, // Center-aligning the text
-          child: const Text(
-            'Next', // Button label
-            style: TextStyle(
-              fontSize: 28, // Font size for visibility
-              fontWeight: FontWeight.bold, // Bold text for emphasis
-              letterSpacing: 1.5, // Spacing between letters
-              color: Color(0xFF443C68), // Darker shade for contrast
-            ),
-          ),
+          child:  Column(
+            children: [
+              SizedBox(height:8),
+              const Text(
+                'Next', // Button label
+                style: TextStyle(
+                  fontSize: 29, // Font size for visibility
+                  fontWeight: FontWeight.bold, // Bold text for emphasis
+                  letterSpacing: 1.5, // Spacing between letters
+                  color: Color(0xFF443C68), // Darker shade for contrast
+                ),
+              ),
+              SizedBox(height:8),
+            ],
+          )
+
         ),
       ),
     );
@@ -162,7 +172,7 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
       'Track. Save. Achieve!', // Motivational message
       style: TextStyle(
         fontSize: 20, // Font size for visibility
-        fontWeight: FontWeight.w500, // Medium font weight for readability
+        fontWeight: FontWeight.w600, // Medium font weight for readability
         color: Color(0xFFAF69B1), // Darker lavender tone
       ),
       textAlign: TextAlign.center, // Center-aligning the text
@@ -172,6 +182,7 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
   // Main build function to construct the UI
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         // App bar title with styling
@@ -187,6 +198,8 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
         shadowColor: const Color(0xFFCDB4DB), // Shadow color
         centerTitle: true, // Center-aligning the title
       ),
+
+
       // Stack to layer background gradient and content
       body: Stack(
         children: [
@@ -194,25 +207,31 @@ class _HiPageState extends State<HiPage> with SingleTickerProviderStateMixin {
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFFCDB4DB), Color(0xFFBDE0FE)], // Gradient colors
+                colors: [
+                  Color(0xFFFFDBE9),
+                  Color(0xFFE6D8FF), // Very light lavender
+                  Color(0xFFBDE0FE), // Very light blue
+                ],
                 begin: Alignment.topCenter, // Start gradient at the top
                 end: Alignment.bottomCenter, // End gradient at the bottom
               ),
             ),
           ),
+
           Padding(
-            padding: const EdgeInsets.all(20.0), // Padding for the content
+            padding: const EdgeInsets.all(17.0), // Padding for the content
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Center-aligning content
+              mainAxisAlignment: MainAxisAlignment.start, // Center-aligning content
               children: [
+                const SizedBox(height: 60),
                 _buildAnimatedWalletIcon(), // Animated wallet icon
-                const SizedBox(height: 25), // Spacing between widgets
-                _buildTagline(), // Tagline text
                 const SizedBox(height: 35), // Spacing between widgets
+                _buildTagline(), // Tagline text
+                const SizedBox(height: 45), // Spacing between widgets
                 _buildFeatureIcons(), // Feature icons
-                const SizedBox(height: 50), // Spacing before the button
+                const SizedBox(height: 45), // Spacing before the button
                 _buildGradientButton(), // Gradient button
-                const SizedBox(height: 25), // Spacing after the button
+                const SizedBox(height: 20), // Spacing after the button
                 _buildMotivationalText(), // Motivational text
               ],
             ),

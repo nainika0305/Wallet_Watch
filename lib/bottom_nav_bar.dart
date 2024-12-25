@@ -30,12 +30,13 @@ class MyBottomNavigationBar extends StatelessWidget {
       ],
       currentIndex: currentIndex,
       onTap: onTap,
-      backgroundColor: Colors.green, // Background color of the nav bar
-      selectedItemColor: Colors.black, // Color of the selected item
-      unselectedItemColor: Colors.orange, // Color of unselected items
-      selectedFontSize: 14.0, // Font size for selected item
-      unselectedFontSize: 12.0, // Font size for unselected items
-      elevation: 8, // Elevation for the nav bar
+      type: BottomNavigationBarType.fixed,
+      backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
+      selectedItemColor: Colors.white, // Color of the selected item
+      unselectedItemColor: Color(0xFF281E5D), // Color of unselected items
+      selectedFontSize: 16, // Font size for selected item
+      unselectedFontSize: 14, // Font size for unselected items
+      elevation: 0, // Elevation for the nav bar
     );
   }
 }
