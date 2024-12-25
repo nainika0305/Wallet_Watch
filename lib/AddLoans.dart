@@ -105,7 +105,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor:Color(0xFF3B8EF3),
+        backgroundColor: Color(0xFFA2D2FF),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -126,7 +126,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
           children: [
             Card(
               elevation: 8,
-              color: Color(0xFFBDE0FE).withOpacity(0.65),
+              //color: Color(0xFFBDE0FE).withOpacity(0.65),
               borderOnForeground: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -159,7 +159,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -178,7 +178,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -197,7 +197,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -216,7 +216,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -235,7 +235,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -254,7 +254,7 @@ class _AddLoansPageState extends State<AddLoansPage> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -267,13 +267,18 @@ class _AddLoansPageState extends State<AddLoansPage> {
                       child: ElevatedButton(
                         onPressed: _addLoan,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3B8EF3),
+                          backgroundColor: Color(0xFFA2D2FF),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text('Add Loan', style: TextStyle(fontSize: 19,color: Colors.white), ),
+                        child: const Text('Add Loan',
+                          style: TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF003366)
+                          ), ),
                       ),
                     ),
                     const SizedBox(height: 10),

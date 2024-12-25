@@ -115,7 +115,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFF3B8EF3).withOpacity(0.9),
+        backgroundColor: Color(0xFFA2D2FF),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -137,7 +137,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
             // Form for adding subscription
             Card(
               elevation: 8,
-              color: Color(0xFFBDE0FE).withOpacity(0.65),
+              //color: Color(0xFFBDE0FE).withOpacity(0.65),
               borderOnForeground: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -170,7 +170,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -189,7 +189,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         prefixIcon: const Icon(Icons.money),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -211,7 +211,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         prefixIcon: const Icon(Icons.calendar_today),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -237,7 +237,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                           color: Color(0xFF003366),
                         ),
                         filled: true,
-                        fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                        fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -254,7 +254,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                       child: ElevatedButton(
                         onPressed: _addSubscription,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF3B8EF3),
+                          backgroundColor: const Color(0xFFA2D2FF),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -262,7 +262,10 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
                         ),
                         child: const Text(
                           'Add Subscription',
-                          style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold,color: Colors.white),
+                          style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF003366),),
                         ),
 
                       ),

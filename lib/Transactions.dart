@@ -45,7 +45,11 @@ class _TransactionsPageState extends State<Transactions> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Transactions'),
+        title: Text('Transactions',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -59,12 +63,27 @@ class _TransactionsPageState extends State<Transactions> {
               _showFilterDialog();
             },
           ),
+
         ],
+        backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
       ),
 
 
       // now read n display the transactions
-      body: Padding(
+     body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFFFDBE9),
+              Color(0xFFE6D8FF), // Very light lavender
+              Color(0xFFBDE0FE), // Very light blue
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+
+        child:  Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -94,8 +113,14 @@ class _TransactionsPageState extends State<Transactions> {
                       final data = transaction.data() as Map<String, dynamic>;
                       return Card(
                         margin: EdgeInsets.symmetric(vertical: 8.0),
+                        color: Color(0xFFFFF4F2),
+
                         child: ListTile(
-                          title: Text(data['title'] ?? 'No Title'),
+                          title: Text(data['title'] ?? 'No Title',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF281E5D), // Dark blue for contrast
+                              )),
                           subtitle: Text(
                               '${data['category'] ?? 'Unknown'} | Amount: ₹${data['amount'] ?? 0}'),
                           trailing: Text(
@@ -119,7 +144,9 @@ class _TransactionsPageState extends State<Transactions> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+
                 ElevatedButton.icon(
+
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -128,7 +155,17 @@ class _TransactionsPageState extends State<Transactions> {
                   },
 
                   icon: Icon(Icons.add),
-                  label: Text('Add Transaction'),
+                  label: Text('Add Transaction',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF2832C2), // Dark blue for contrast
+                      )),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:  Color(0xFFFFDBE9).withOpacity(0.95),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -136,50 +173,73 @@ class _TransactionsPageState extends State<Transactions> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+
+
+
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Manage Subscriptions Page
                     Navigator.pushNamed(context, '/Subscriptions');
                   },
-                  child: Text('Subscriptions'),
+                  child: Text('Subscriptions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white, // Dark blue for contrast
+                    ),),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF2832C2).withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                       ),
+                       ),
                 ),
+
+
+
+
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Insurance Page
                     Navigator.pushNamed(context, '/insurance');
                   },
-                  child: Text('Insurance'),
+                  child: Text('Insurance',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white, // Dark blue for contrast
+                    ),)
+                  ,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF2832C2).withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
+
+
+
                 ElevatedButton(
                   onPressed: () {
                     // Navigate to Loans Page
                     Navigator.pushNamed(context, '/Loans');
                   },
-                  child: Text('Loans'),
+                  child: Text('Loans',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white, // Dark blue for contrast
+                    ),),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF2832C2).withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ],
             ),
           ],
         ),
-      ),
-
-
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Transaction page index
-        onTap: (index) {
-          // Navigate to the respective page
-          if (index == 0) Navigator.pushNamed(context, '/home');
-          if (index == 1) Navigator.pushNamed(context, '/transactions');
-          if (index == 2) Navigator.pushNamed(context, '/budgets');
-          if (index == 3) Navigator.pushNamed(context, '/profile');
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Transactions'),
-          BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Budgets'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+        ),
       ),
     );
   }

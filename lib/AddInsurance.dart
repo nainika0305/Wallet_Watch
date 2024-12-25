@@ -117,7 +117,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFF3B8EF3).withOpacity(0.9),
+        backgroundColor: Color(0xFFA2D2FF).withOpacity(0.9),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -137,7 +137,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
             children: [
               Card(
                 elevation: 8,
-                color: Color(0xFFBDE0FE).withOpacity(0.8),
+                //color: Color(0xFFBDE0FE).withOpacity(0.8),
                 borderOnForeground: true,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -168,7 +168,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -187,7 +187,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -206,7 +206,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -227,7 +227,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -247,7 +247,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -265,7 +265,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                             color: Color(0xFF003366),
                           ),
                           filled: true,
-                          fillColor: const Color(0xFFFFF4F2).withOpacity(0.7),
+                          fillColor: const Color(0xFFBDE0FE).withOpacity(0.3),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
@@ -278,7 +278,7 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                         child: ElevatedButton(
                           onPressed: _addInsurance,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF3B8EF3),
+                            backgroundColor: const Color(0xFFA2D2FF),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -287,7 +287,10 @@ class _AddInsurancePageState extends State<AddInsurancePage> {
                           child: const Text(
                             'Add Policy',
                             style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.bold, color: Colors.white),
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                color:Color(0xFF003366)
+                            ),
                           ),
                         ),
                       ),
