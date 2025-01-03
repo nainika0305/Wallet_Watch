@@ -360,6 +360,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                             totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
                             print("Total money before update: $totalMoney");
                           } else {
+                            docRef.set({
+                              'totalMoney': 0.00,
+                            }, SetOptions(merge: true));
                             print("Document does not exist");
                           }
                           // Parse the transaction amount and type
