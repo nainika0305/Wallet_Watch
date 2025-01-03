@@ -97,7 +97,7 @@ class _InsuranceState extends State<Insurance> {
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
+        backgroundColor:  Color(0xFFD1A7D1).withOpacity(0.9),
       ),
 
     body: Container(

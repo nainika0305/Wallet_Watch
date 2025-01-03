@@ -65,7 +65,7 @@ class _TransactionsPageState extends State<Transactions> {
           ),
 
         ],
-        backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
+        backgroundColor: Color(0xFFD1A7D1), // Soft lavender
       ),
 
 
@@ -146,14 +146,12 @@ class _TransactionsPageState extends State<Transactions> {
               children: [
 
                 ElevatedButton.icon(
-
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => AddTransactionPage()),
                     );
                   },
-
                   icon: Icon(Icons.add),
                   label: Text('Add Transaction',
                       style: TextStyle(

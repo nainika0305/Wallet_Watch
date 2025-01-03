@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
             color: Colors.black, // Lighter pink color
           ),),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF2832C2).withOpacity(0.5), // Soft lavender
+        backgroundColor: Color(0xFFD1A7D1), // Soft lavender, // Soft lavender
       ),
 
       body: Container(
@@ -271,7 +271,7 @@ class _ProfileState extends State<Profile> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Icon(icon, color: Colors.white, size: 28.0),
+                  child: Icon(icon, color: Colors.black, size: 28.0),
                 ),
                 Expanded(
                   child: Text(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -7,6 +6,7 @@ import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/AddTransaction.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wallet_watch/goals.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -36,7 +36,6 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchTotalMoney() async {
     try {
-      // Listen to real-time updates for the user's totalMoney field
       FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -55,7 +54,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // for printing
   String getDaySuffix(int day) {
     if (day >= 11 && day <= 13) {
       return 'th';
@@ -72,7 +70,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // display transactiosn
   Future<void> _fetchGraphData() async {
     try {
       QuerySnapshot query = await FirebaseFirestore.instance
@@ -89,16 +86,14 @@ class _HomeState extends State<Home> {
       Map<String, double> expenseData = {};
 
       for (var transaction in transactions) {
-        // Ensure the date is properly parsed if it's a string
         DateTime transactionDate;
         if (transaction['date'] is String) {
           transactionDate = DateTime.parse(transaction['date']);
         } else {
-          // If it's already a Timestamp, convert it to DateTime
           transactionDate = (transaction['date'] as Timestamp).toDate();
         }
 
-        String dateKey = DateFormat('yyyy-MM-dd').format(transactionDate); // Format the date as key
+        String dateKey = DateFormat('yyyy-MM-dd').format(transactionDate);
         double amount = transaction['amount'];
 
         if (transaction['type'] == 'Income') {
@@ -108,10 +103,6 @@ class _HomeState extends State<Home> {
         }
       }
 
-      print("income data, $incomeData");
-      print("expense data, $expenseData");
-
-      // Generate x-axis labels and map to FlSpot points
       List<DateTime> allDates = [];
       for (var i = 0; i <= toDate.difference(fromDate).inDays; i++) {
         allDates.add(fromDate.add(Duration(days: i)));
@@ -119,7 +110,7 @@ class _HomeState extends State<Home> {
 
       xAxisLabels = allDates.map((date) {
         int day = date.day;
-        String suffix = getDaySuffix(day);  // Ensure this function is correct
+        String suffix = getDaySuffix(day);
         String formattedDate = DateFormat('d MMM').format(date);
         return formattedDate.replaceFirst(day.toString(), '$day$suffix');
       }).toList();
@@ -133,12 +124,11 @@ class _HomeState extends State<Home> {
     }
   }
 
-// Helper function to generate spots
   List<FlSpot> _generateSpots(List<DateTime> allDates, Map<String, double> data) {
     return allDates.map((date) {
       String dateKey = DateFormat('yyyy-MM-dd').format(date);
       double amount = data[dateKey] ?? 0.0;
-      return FlSpot(date.day.toDouble(), amount);  // Use day as x-axis value
+      return FlSpot(date.day.toDouble(), amount);
     }).toList();
   }
 
@@ -159,89 +149,42 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // grpah
   Widget _buildGraph() {
-    return
-      SizedBox(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(10,10,20, 15)
-          ,
-          height: 300,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.pink[50]!, Colors.pink[100]!],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.pink.withOpacity(0.2),
-            blurRadius: 25,
-            spreadRadius: 7,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // combined etc
-              SizedBox(
-
-              child: Container(
-              child: DropdownButton<String>(
-                value: selectedGraphType,
-                onChanged: (value) {
-                  setState(() {
-                    selectedGraphType = value!;
-                    _fetchGraphData();
-                  });
-                },
-                items: ['Income', 'Expenses', 'Combined']
-                    .map((type) => DropdownMenuItem(
-                  value: type,
-                  child: Text(
-                    type,
-                    style: TextStyle(
-                      color: Colors.pink[300],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ))
-                    .toList(),
-              ),
-              ),
-              ),
-
-              // slect range
-              ElevatedButton(
-                onPressed: _pickDateRange,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink[200],
-                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return SizedBox(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10, 10, 20, 15),
+        height: 300,
+        width: double.infinity,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
                 ),
-                child: const Text(
-                  'Select Date Range',
-                  style: TextStyle(
+                ElevatedButton(
+                  onPressed: _pickDateRange,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white70,
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+                  ),
+                  child:  Text(
+                    'Select Date Range',
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                      color: Colors.pink[200],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
 
-          SizedBox(height: 19),
-
-
-          Expanded(
-            child: LineChart(
+              ],
+            ),
+            SizedBox(height: 19),
+            Expanded(
+              child: LineChart(
                 LineChartData(
                   titlesData: FlTitlesData(
                     bottomTitles: AxisTitles(
@@ -254,9 +197,7 @@ class _HomeState extends State<Home> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Text(
                                 xAxisLabels[index],
-                                style: const TextStyle(fontSize: 10,
-                                  // fontWeight: FontWeight.bold
-                                  ),
+                                style: const TextStyle(fontSize: 10),
                               ),
                             );
                           }
@@ -264,15 +205,11 @@ class _HomeState extends State<Home> {
                         },
                       ),
                     ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide left axis titles (y-axis)
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // Hide top axis titles
-                    ),
+                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                   ),
-                  gridData: FlGridData(show: false), // Hide grid lines
-                  borderData: FlBorderData(show: true), // Optionally show the border
+                  gridData: FlGridData(show: false),
+                  borderData: FlBorderData(show: true),
                   lineBarsData: [
                     if (selectedGraphType == 'Combined' || selectedGraphType == 'Income')
                       LineChartBarData(
@@ -289,197 +226,298 @@ class _HomeState extends State<Home> {
                         color: Colors.red,
                       ),
                   ],
-                )
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
         ),
+      ),
     );
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        centerTitle: true,
-        title:Text(
-          motivationalQuote,
+
+        title: Text(
+          'Home',
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF281E5D)
-           ),
-        ),
-        backgroundColor:  Color(0xFF2832C2).withOpacity(0.5),
-      ),
-
-      body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFFFFDBE9),
-                Color(0xFFE6D8FF), // Very light lavender
-                Color(0xFFBDE0FE), // Very light blue
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF281E5D),
           ),
+        ),
+        backgroundColor: Color(0xFFD1A7D1),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFFFFDBE9),
+              Color(0xFFE6D8FF),
+              Color(0xFFBDE0FE),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
 
-          child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-
-            // Total Money Section
-            SizedBox(
-              width: 300,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    //Color(0xFFBDE0FE),
-                    Color(0xFFE0B0FF).withOpacity(0.6),
-                    Color(0xFF2832C2).withOpacity(0.6),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+ const SizedBox(height: 20),
+              SizedBox(
+                width: 500,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFECEDD),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Total Money:  ₹ ${totalMoney.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF281E5D).withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(18),
               ),
-              child: Column(
+              const SizedBox(height: 35),
+              _buildGraph(),
+              Row(
                 children: [
-                   Text(
-                    "Total Money",
-                    style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF281E5D).withOpacity(0.7),
+                  const SizedBox(width: 16),
+                  SizedBox(
+                    width: 125,
+                    height: 40,
+                      child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedGraphType = 'Combined';
+                          _fetchGraphData();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                       // padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                        backgroundColor: selectedGraphType == 'Combined'? Colors.white70 : Colors.white24,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+                        elevation: 2,
+                      ),
+                      child: Text(
+                        "Combined",
+                        style: TextStyle(fontSize: 14, color: Colors.pink[200], fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    ),
+
+
+                  const SizedBox(height: 35),
+                  SizedBox(
+                    width: 125,
+                    height: 40,
+                    child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Color(0xFFF48FB1),
+                              width: 2.0,  // Adjust the width as needed
+                            ),
+                          ),
+                        ),
+                        child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedGraphType = 'Income';
+                          _fetchGraphData();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        //padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                        backgroundColor: selectedGraphType == 'Income' ? Colors.white70 : Colors.white24,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+                        elevation: 2,
+                      ),
+                      child:  Text(
+                        "Income",
+                        style: TextStyle(fontSize: 14, color: Colors.pink[200], fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     ),
                   ),
-                  const Divider(
-                    thickness: 4,
-                    color: Colors.black54,
-                  ),
-                  Text(
-                    "₹ ${totalMoney.toStringAsFixed(2)}",
-                    style: TextStyle(
-                      fontSize: 32,
-                     // fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  //const SizedBox(width: 12),
+                  const SizedBox(height: 30),
+                  SizedBox(
+                    width: 125,
+                    height: 40,
+                    child: Container(
+                      decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Color(0xFFF48FB1),
+                          width: 2.0,  // Adjust the width as needed
+                        ),
+                      ),
                     ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedGraphType = 'Expenses';
+                          _fetchGraphData();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        //padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                        backgroundColor: selectedGraphType == 'Expenses' ? Colors.white70: Colors.white24,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+                        elevation: 2,
+                      ),
+                      child:  Text(
+                        "Expenses",
+                        style: TextStyle(fontSize: 14, color: Colors.pink[200], fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
                   ),
                 ],
               ),
-            ),
-            ),
+              const SizedBox(height: 30),
 
+              Text(motivationalQuote,
+              style: TextStyle(
+                fontSize: 23,
+                letterSpacing: 1.1,
+                color: Color(0xFF281E5D),
+                  fontStyle: FontStyle.italic,
+              ),),
 
-            // graph
-            const SizedBox(height: 35),
-            _buildGraph(),
-
-
-            //buttons
-            const SizedBox(height: 35),
-            // Compact Buttons and Neatly Aligned
-            Column(
-
-              children: [
-                SizedBox(
-                  width: 275, // Set the desired width
-                  child:
-                  ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Transactions()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor:  Color(0xFFE0B0FF),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
-                  ),
-                  child: const Text(
-                    "View Transactions",
-                    style: TextStyle(
-                        fontSize: 19,
-                        color: Color(0xFF281E5D),
-                        fontWeight: FontWeight.bold
+              const SizedBox(height: 30),
+              Column(
+                children: [
+                  SizedBox(
+                    width: 400,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, '/transactions'
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                        backgroundColor: Color(0xFF73A5C6),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        "View Transactions",
+                        style: TextStyle(
+                          fontSize: 19,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 195,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Tips()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                            backgroundColor: Color(0xFF73A5C6),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            elevation: 12,
+                          ),
+                          child: const Text(
+                            "Financial Tips",
+                            style: TextStyle(
+                                fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      SizedBox(
+                        width: 195,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GoalsPage()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                            backgroundColor: Color(0xFF73A5C6),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                            elevation: 12,
+                          ),
+                          child: const Text(
+                            "Set Goals",
+                            style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
 
-                const SizedBox(height: 20),
-
-                SizedBox(
-                    width: 275,
-                  child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Tips()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor: Color(0xFF0492C2).withOpacity(0.6),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
+                    ],
                   ),
-                  child: const Text(
-                    "Financial Tips",
-                    style: TextStyle(fontSize: 19,
-                        color: Color(0xFF281E5D),
-                        fontWeight: FontWeight.bold),
+                 const SizedBox(height: 30),
+
+                  SizedBox(
+                    width: 260,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                          MaterialPageRoute(builder: (context) => AddTransactionPage()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                       // padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
+                        backgroundColor: Color(0xFFFECEDD).withOpacity(0.8),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        elevation: 0,
+                      ),
+
+                      icon: Icon(Icons.add,
+                      color: Color(0xFF281E5D),),
+                      label: const Text(
+                        "Add Transactions",
+                        style: TextStyle(
+                          fontSize: 19,
+                          color: Color(0xFF281E5D),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                ),
+
+                  const SizedBox(height: 200),
 
 
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 275,
-                  child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddTransactionPage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 35),
-                    backgroundColor: Colors.pink[100],
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-                    elevation: 12,
-                  ),
-                  child: const Text(
-                    "Add Transaction",
-                    style: TextStyle(fontSize: 19,
-                        color: Color(0xFF281E5D),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ),
+                ],
 
+              ),
+            ],
 
-              ],
-            ),
-            SizedBox(height: 40),
-          ],
-        ),
+          ),
         ),
       ),
     );
