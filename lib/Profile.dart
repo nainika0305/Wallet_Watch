@@ -64,23 +64,42 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFFCDB4DB), // Soft lavender
+        backgroundColor: const Color(0xFF2832C2).withOpacity(0.5), // Soft lavender
       ),
-      body: SingleChildScrollView(
+
+      body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFFDBE9),
+                Color(0xFFE6D8FF), // Very light lavender
+                Color(0xFFBDE0FE), // Very light blue
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+
+          child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
         child: Column(
           children: [
             // Enhanced Profile Section
+            const SizedBox(height: 15.0),
             _buildProfileCard(context),
-
-            const SizedBox(height: 30.0),
+            const SizedBox(height: 15.0),
 
             // Existing buttons with darkened text
             _buildButtonRow(
               title: 'Settings',
-              colors: [const Color(0xFFCDB4DB), const Color(0xFFE4DFED)], // Soft lavender + light pinkish
+              colors:
+              [const Color(0xFFBDE0FE), const Color(0xFFA2D2FF)], // Soft lavender + light pinkish
               icon: Icons.settings,
               alignment: Alignment.centerLeft,
               onTap: () {
@@ -144,7 +163,7 @@ class _ProfileState extends State<Profile> {
             ),
             _buildButtonRow(
               title: 'Meet the Team',
-              colors: [const Color(0xFFCDB4DB), const Color(0xFFE4DFED)], // Vibrant rose pink + light pink
+              colors: [const Color(0xFFBDE0FE), const Color(0xFFA2D2FF)], // Vibrant rose pink + light pink
               icon: Icons.group,
               alignment: Alignment.centerLeft,
               onTap: () {
@@ -157,13 +176,14 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
+      ),
     );
   }
 
   // Enhanced Profile Card
   Widget _buildProfileCard(BuildContext context) {
     return Card(
-      elevation: 5.0,
+      elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       color: const Color(0xFFCDB4DB), // Soft lavender
       child: Padding(
@@ -212,6 +232,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+
   // Enhanced Button Row with darker text
   Widget _buildButtonRow({
     required String title,
@@ -244,6 +265,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
