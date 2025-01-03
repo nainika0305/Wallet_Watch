@@ -12,8 +12,7 @@ class Tips extends StatelessWidget {
           fontWeight: FontWeight.bold,
           fontSize: 25,
         )),
-        backgroundColor: Color(0xFFA2D2FF),
-
+        backgroundColor: Color(0xFFD1A7D1), // Soft lavender
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

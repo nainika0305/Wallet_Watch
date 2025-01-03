@@ -64,13 +64,29 @@ class _BudgetsState extends State<Budgets> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Budgets'),
+        title: const Text('Budgets',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         automaticallyImplyLeading: false,
-        centerTitle: true,
         elevation: 4.0,
         backgroundColor: Color(0xFFD1A7D1), // Soft lavender
       ),
-      body: Padding(
+    body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        colors: [
+        Color(0xFFFFDBE9),
+        Color(0xFFE6D8FF), // Very light lavender
+        Color(0xFFBDE0FE), // Very light blue
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        ),
+        ),
+
+    child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -121,6 +137,10 @@ class _BudgetsState extends State<Budgets> {
                   );
                 },
               ),
+            ),
+            const Divider(
+              thickness: 4,
+              color: Colors.black54,
             ),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -180,24 +200,22 @@ class _BudgetsState extends State<Budgets> {
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFC8DD), // Light pinkish shade
+                  color: Color(0xFFFFDBE9).withOpacity(0.95),
                   borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
+
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.add, color: Colors.white, size: 30),
+                    Icon(Icons.add, color:Color(0xFF2832C2), size: 30),
                     SizedBox(width: 10),
                     Text(
                       "Add Budget",
-                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                       style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Color(0xFF2832C2), // Dark blue for contrast
+                    ),
                     ),
                   ],
                 ),
@@ -206,6 +224,7 @@ class _BudgetsState extends State<Budgets> {
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -235,7 +254,11 @@ class BudgetItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 5,
       child: ListTile(
-        title: Text(name),
+        title: Text(name,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF281E5D), // Dark blue for contrast
+            )),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -247,7 +270,7 @@ class BudgetItem extends StatelessWidget {
               color: color,
             ),
             const SizedBox(height: 8),
-            Text('Progress: \$${(progress * amount).toStringAsFixed(2)} of \$${amount.toStringAsFixed(2)}'),
+            Text('Progress: \₹${(progress * amount).toStringAsFixed(2)} of \₹${amount.toStringAsFixed(2)}'),
             TextButton(
               onPressed: () {
                 showDialog(

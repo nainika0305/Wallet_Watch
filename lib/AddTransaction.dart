@@ -141,11 +141,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
         title: const Text('Add Transaction',
           style: TextStyle(
             fontWeight: FontWeight.bold, // Make title bold
-            color: Colors.black, // Lighter pink color
+            color: Colors.black,
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor:  Color(0xFFF699CD),
+        backgroundColor:  Color(0xFFD1A7D1),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -350,6 +350,34 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Transaction added successfully')),
                         );
+                        try {
+                          // Initialize the totalMoney to 0.0
+                          double totalMoney = 0.0;
+                          final docRef = FirebaseFirestore.instance.collection('users').doc(userId); // DocumentReference for the user
+                          final doc = await docRef.get(); // Get the document snapshot
+                          if (doc.exists) {
+                            // Fetch current totalMoney, ensuring it's a double
+                            totalMoney = (doc.data()?['totalMoney'] ?? 0.0).toDouble(); // Extract totalMoney from the doc
+                            print("Total money before update: $totalMoney");
+                          } else {
+                            print("Document does not exist");
+                          }
+                          // Parse the transaction amount and type
+                          double transactionAmount = double.tryParse(transactionData['amount'].toString()) ?? 0.0; // Safely parse to double
+                          String transactionType = transactionData['type'] as String; // "Income" or "Expense"
+                          // Adjust totalMoney based on the transaction type
+                          if (transactionType == 'Income') {
+                            totalMoney += transactionAmount; // Add for Income
+                          } else if (transactionType == 'Expense') {
+                            totalMoney -= transactionAmount; // Subtract for Expense
+                          }
+                          // Update the totalMoney field in Firestore
+                          await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
+                          // Print updated totalMoney for debugging
+                          print("Total money after update: $totalMoney");
+                        } catch (e) {
+                          print("Error updating totalMoney: $e");
+                        }
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Failed to add transaction: $e')),

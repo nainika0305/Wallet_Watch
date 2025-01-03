@@ -16,6 +16,7 @@ import 'package:wallet_watch/TaxEstimationTool.dart';
 import 'package:wallet_watch/Tips.dart';
 import 'package:wallet_watch/Transactions.dart';
 import 'package:wallet_watch/auth_page.dart';
+import 'package:wallet_watch/goals.dart';
 import 'package:wallet_watch/homepage.dart';
 import 'package:wallet_watch/insurance.dart';
 import 'package:wallet_watch/login_page.dart';
@@ -41,6 +42,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/auth': (context) => AuthPage(),
   '/wrapper': (context) => MainPage(),
   '/tips': (context) => Tips(),
+  '/goal': (context) => GoalsPage(),
   '/transactions': (context) => Transactions(),
   '/settings': (context) => Settings(),
   '/feedback': (context) => review(),

@@ -35,24 +35,44 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Budget'),
+        title: const Text('Add Budget',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         centerTitle: true,
         backgroundColor: Color(0xFFCDB4DB), // Lavender
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+
+    body: Container(
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+      colors: [
+      Color(0xFFFFDBE9),
+      Color(0xFFE6D8FF), // Very light lavender
+      Color(0xFFBDE0FE), // Very light blue
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      ),
+      ),
+
+    child: Padding(
+        padding: const EdgeInsets.all(22.0),
         child: Column(
           children: [
             // Expense/Savings Toggle
+            const SizedBox(height: 10),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildBudgetTypeButton('Expense Budget', isExpenseBudget, true, Color(0xFFBDE0FE)),
                 const SizedBox(width: 16),
-                _buildBudgetTypeButton('Savings Budget', !isExpenseBudget, false, Color(0xFFFAF9F5)),
+                _buildBudgetTypeButton('Savings Budget', !isExpenseBudget, false, Color(0xFFF699CD).withOpacity(0.7)),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Form Fields
             Expanded(
@@ -62,7 +82,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                     controller: _nameController,
                     label: 'Budget Name',
                     icon: Icons.edit,
-                    color: Color(0xFFCDB4DB),
+                    color: Color(0xFFFAF9F5),
                   ),
                   const SizedBox(height: 16),
                   _buildFormField(
@@ -75,7 +95,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                   _buildFormField(
                     controller: _amountController,
                     label: 'Budget Amount',
-                    icon: Icons.attach_money,
+                    icon: Icons.money,
                     color: Color(0xFFFAF9F5),
                   ),
                   const SizedBox(height: 16),
@@ -92,7 +112,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
               child: ElevatedButton(
                 onPressed: _saveBudget,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFFAFCC), // Rose pink
+                    backgroundColor: Color(0xFFCDB4DB),
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -100,12 +120,13 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
                 ),
                 child: const Text(
                   'Save Budget',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
               ),
             ),
           ],
         ),
+    ),
       ),
     );
   }
@@ -126,7 +147,7 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
         child: Text(
           title,
           style: TextStyle(
-            color: isActive ? Colors.white : Colors.black,
+            color:  Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -144,8 +165,15 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: TextStyle(color: Color(0xFF003366)),
+        filled: true, // To fill the background with color
+        fillColor: Color(0xFFFDA4BA).withOpacity(0.35),
         prefixIcon: Icon(icon, color: color),
-        border: OutlineInputBorder(borderSide: BorderSide(color: color)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
+        ),
+
       ),
       keyboardType: TextInputType.numberWithOptions(decimal: true),
     );
@@ -180,9 +208,12 @@ class _AddBudgetPageState extends State<AddBudgetPage> {
       items: _categories
           .map((category) => DropdownMenuItem(value: category, child: Text(category)))
           .toList(),
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'Select Category',
         border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Color(0xFF003366)),
+        filled: true, // To fill the background with color
+        fillColor: Color(0xFFFDA4BA).withOpacity(0.35),
       ),
     );
   }

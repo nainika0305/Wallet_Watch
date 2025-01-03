@@ -64,36 +64,60 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Currency Converter'),
-        backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
+        title: const Text('Currency Converter',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
+        backgroundColor: const Color(0xFFCDB4DB),  // Changed the color here
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+    body: Container(
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+      colors: [
+      Color(0xFFFFDBE9),
+      Color(0xFFE6D8FF), // Very light lavender
+      Color(0xFFBDE0FE), // Very light blue
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      ),
+      ),
+
+    child:  Padding(
+        padding:  EdgeInsets.all(25.0),
         child: ListView(
           children: [
-            const Text(
-              'Currency Converter',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(
-                  0xFF000000)),  // Changed the color here
-              textAlign: TextAlign.center,
-            ),
+
             const SizedBox(height: 30),
 
             // Amount Input Field
             TextField(
               controller: _amountController,
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 labelText: 'Amount',
+                labelStyle: TextStyle(color: Color(0xFF003366)),
+                filled: true, // To fill the background with color
+                fillColor: Color(0xFFFDA4BA).withOpacity(0.15),
                 border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.attach_money),
+                prefixIcon: Icon(Icons.money),
               ),
               keyboardType: TextInputType.number,
               onChanged: (_) => _convertCurrency(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // From Currency Dropdown
-            DropdownButton<String>(
+            Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFDA4BA).withOpacity(0.15), // Set your desired background color
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: Colors.black, // Border color
+                    width: 1, // Border thickness
+                  ),
+                ),
+            child: DropdownButton<String>(
               value: _fromCurrency,
               isExpanded: true,
               onChanged: (String? newValue) {
@@ -110,10 +134,20 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
               ))
                   .toList(),
             ),
-            const SizedBox(height: 20),
+            ),
+            const SizedBox(height: 30),
 
             // To Currency Dropdown
-            DropdownButton<String>(
+            Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFFFDA4BA).withOpacity(0.15), // Set your desired background color
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: Colors.black, // Border color
+                    width: 1, // Border thickness
+                  ),
+                ),
+                child:DropdownButton<String>(
               value: _toCurrency,
               isExpanded: true,
               onChanged: (String? newValue) {
@@ -129,13 +163,14 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
               ))
                   .toList(),
             ),
+            ),
             const SizedBox(height: 20),
 
             // Converted Amount
             if (_convertedAmount != null)
               Text(
                 'Converted Amount: ${_convertedAmount!.toStringAsFixed(2)} $_toCurrency',
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFFBDE0FE)),  // Changed the color here
+                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),  // Changed the color here
                 textAlign: TextAlign.center,
               ),
             const SizedBox(height: 20),
@@ -143,15 +178,27 @@ class _CurrencyConversionState extends State<CurrencyConversion> {
             // Refresh Button
             ElevatedButton(
               onPressed: _fetchExchangeRates,
-              child: const Text('Refresh Rates'),
+              child: const Text('Refresh Rates',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
-                textStyle: const TextStyle(fontSize: 16),
+                textStyle: const TextStyle(fontSize: 14),
+              shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              side: BorderSide(
+              color: Colors.black,
+              width: 1,
+              ),
+              ),
               ),
             ),
           ],
         ),
       ),
+    ),
     );
   }
 }

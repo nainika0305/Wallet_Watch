@@ -51,16 +51,36 @@ class _reviewState extends State<review> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit Feedback'),
-        backgroundColor: const Color(0xFFBDE0FE),  // Changed the color here
+        title: const Text('Submit Feedback',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
+        backgroundColor: const Color(0xFFCDB4DB),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+
+
+    body: Container(
+    decoration: BoxDecoration(
+    gradient: LinearGradient(
+    colors: [
+    Color(0xFFFFDBE9),
+    Color(0xFFE6D8FF), // Very light lavender
+    Color(0xFFBDE0FE), // Very light blue
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    ),
+    ),
+
+    child: Padding(
+        padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: [
             // Header with title
+            SizedBox(height: 20),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+              padding: EdgeInsets.symmetric(vertical: 14.0),
               child: Text(
                 'We value your feedback!',
                 style: TextStyle(
@@ -71,7 +91,7 @@ class _reviewState extends State<review> {
                 textAlign: TextAlign.center,
               ),
             ),
-
+            SizedBox(height: 15),
             // Form for capturing feedback
             Form(
               key: _formKey,
@@ -90,7 +110,7 @@ class _reviewState extends State<review> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
                   // Email Field
                   _buildCustomTextField(
@@ -123,17 +143,26 @@ class _reviewState extends State<review> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 30),
 
                   // Submit Button
                   ElevatedButton(
                     onPressed: _submitFeedback,
-                    child: const Text('Submit Feedback'),
+                    child: const Text('Submit Feedback',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: const Color(0xFFBDE0FE), // Changed the color here
                       textStyle: const TextStyle(fontSize: 18),
+
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(50),
+                        side: BorderSide(
+                          color: Colors.black,
+                          width: 1,
+                        ),
                       ),
                     ),
                   ),
@@ -143,6 +172,7 @@ class _reviewState extends State<review> {
           ],
         ),
       ),
+    ),
     );
   }
 

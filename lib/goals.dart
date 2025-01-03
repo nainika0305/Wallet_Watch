@@ -68,13 +68,30 @@ class _GoalsPageState extends State<GoalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Goals'),
-        backgroundColor: const Color(0xFFBDE0FE),  // Updated color here
+        title: const Text('Your Goals',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),),
+        backgroundColor: const Color(0xFFCDB4DB),  // Updated color here
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+    body: Container(
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+      colors: [
+      Color(0xFFFFDBE9),
+      Color(0xFFE6D8FF), // Very light lavender
+      Color(0xFFBDE0FE), // Very light blue
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      ),
+      ),
+
+    child:  Padding(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
+            const SizedBox(height: 20),
             // Header Section
             const Text(
               'Set your goals and track them!',
@@ -85,7 +102,7 @@ class _GoalsPageState extends State<GoalsPage> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
 
             // Form to add a new goal
             Form(
@@ -96,10 +113,15 @@ class _GoalsPageState extends State<GoalsPage> {
                     controller: _titleController,
                     decoration: InputDecoration(
                       labelText: 'Goal Title',
+                      labelStyle: TextStyle(color: Color(0xFF003366)),
+                      filled: true, // To fill the background with color
+                      fillColor: Color(0xFFFDA4BA).withOpacity(0.15),
                       hintText: 'Enter your goal title',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),  // Slightly rounded corners
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                       ),
+
                     ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
@@ -108,15 +130,19 @@ class _GoalsPageState extends State<GoalsPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _descriptionController,
                     maxLines: 3,
                     decoration: InputDecoration(
                       labelText: 'Goal Description',
+                      labelStyle: TextStyle(color: Color(0xFF003366)),
+                      filled: true, // To fill the background with color
+                      fillColor: Color(0xFFFDA4BA).withOpacity(0.15),
                       hintText: 'Describe your goal',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),  // Slightly rounded corners
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Color(0xFF003366), width: 1), // Added border color and width
                       ),
                     ),
                     validator: (value) {
@@ -126,7 +152,7 @@ class _GoalsPageState extends State<GoalsPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: _addGoal,
                     style: ElevatedButton.styleFrom(
@@ -148,7 +174,11 @@ class _GoalsPageState extends State<GoalsPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
+            const Divider(
+              thickness: 3,
+              color: Colors.black,
+            ),
 
             // Display Goals Section
             Expanded(
@@ -210,6 +240,7 @@ class _GoalsPageState extends State<GoalsPage> {
           ],
         ),
       ),
+    ),
     );
   }
 }

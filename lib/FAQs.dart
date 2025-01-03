@@ -7,10 +7,27 @@ class FAQs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FAQs'),
+        title: const Text('FAQs',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),),
         backgroundColor: const Color(0xFFCDB4DB), // Soft Lavender
       ),
-      body: Container(
+
+    body: Container(
+      decoration: BoxDecoration(
+      gradient: LinearGradient(
+      colors: [
+      Color(0xFFFFDBE9),
+      Color(0xFFE6D8FF), // Very light lavender
+      Color(0xFFBDE0FE), // Very light blue
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      ),
+      ),
+
+    child:  Container(
         color: const Color(0xFFF9F9F9), // Slightly darker than white (light gray)
         padding: const EdgeInsets.all(16.0),
         child: ListView(
@@ -98,6 +115,7 @@ class FAQs extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 
@@ -124,7 +142,7 @@ class FAQs extends StatelessWidget {
                   radius: 30,
                   child: Icon(
                     icon,
-                    color: color,
+                    color: Colors.black,
                     size: 30,
                   ),
                 ),

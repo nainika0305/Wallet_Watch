@@ -24,8 +24,10 @@ class LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      // Optionally navigate to another page after successful login
-    } on FirebaseAuthException catch (e) {
+      // navigate to another page after successful login
+      Navigator.pushNamed(context, '/home');
+    } on FirebaseAuthException catch (e)
+    {
       String errorMessage;
       if (e.code == 'user-not-found') {
         errorMessage = 'No user found with this email.';
@@ -34,9 +36,8 @@ class LoginPageState extends State<LoginPage> {
       } else if (e.code == 'invalid-email') {
         errorMessage = 'Invalid email address.';
       } else {
-        errorMessage = 'Please fill all required fields';
+        errorMessage = e.code;
       }
-
       // Show the error message in a SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -49,6 +50,7 @@ class LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('An unexpected error occurred. Please try again.'),
+
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -175,7 +177,6 @@ class LoginPageState extends State<LoginPage> {
                             },
                             child: Text('Forgot Password?',
                               style: TextStyle(
-
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blueAccent,
 
@@ -184,7 +185,6 @@ class LoginPageState extends State<LoginPage> {
                         ],
                       ),
                     ),
-
                   ),
 
 

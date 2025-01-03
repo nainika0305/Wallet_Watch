@@ -21,12 +21,29 @@ class _SettingsState extends State<Settings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Text('Settings',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, // Make title bold
+            color: Colors.black, // Lighter pink color
+          ),),
         backgroundColor: _isDarkMode
             ? const Color(0xFF2C2C2C) // Dark grey for dark mode
             : const Color(0xFFCDB4DB), // Soft lavender tone for light mode
       ),
       body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFFFDBE9),
+                Color(0xFFE6D8FF), // Very light lavender
+                Color(0xFFBDE0FE), // Very light blue
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+
+          child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: _isDarkMode
@@ -41,13 +58,6 @@ class _SettingsState extends State<Settings> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Customize Your Settings',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               const SizedBox(height: 20),
 
               // Dark Mode Toggle
@@ -70,7 +80,7 @@ class _SettingsState extends State<Settings> {
                   color: _isDarkMode ? Colors.white : Color(0xFFFFAFCC),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
               // Font Size Slider
               ListTile(
@@ -99,11 +109,11 @@ class _SettingsState extends State<Settings> {
                         _fontSize = value;
                       });
                     },
-                    activeColor: _isDarkMode ? Colors.white : const Color(0xFFBDE0FE),
+                    activeColor: _isDarkMode ? Colors.white : Colors.black54,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
               // Font Selection Dropdown
               ListTile(
@@ -122,7 +132,7 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
                 trailing: SizedBox(
-                  width: 150,
+                  width: 165,
                   child: DropdownButton<String>(
                     value: _selectedFont,
                     onChanged: (String? newValue) {
@@ -144,7 +154,7 @@ class _SettingsState extends State<Settings> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
 
               // Buttons Section
               Center(
@@ -164,7 +174,7 @@ class _SettingsState extends State<Settings> {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                     _buildButton(
                       label: 'Forgot Password',
                       color: _isDarkMode
@@ -179,7 +189,7 @@ class _SettingsState extends State<Settings> {
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 22),
                     _buildButton(
                       label: 'Reset to Default Settings',
                       color: _isDarkMode
@@ -196,11 +206,15 @@ class _SettingsState extends State<Settings> {
                   ],
                 ),
               ),
+              const SizedBox(height: 350),
             ],
           ),
+
         ),
+          ),
       ),
       backgroundColor: _isDarkMode ? Colors.black : Colors.white,
+
     );
   }
 

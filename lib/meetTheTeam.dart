@@ -17,6 +17,7 @@ class MeetTheTeamPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+
         backgroundColor: const Color(0xFFCDB4DB), // Soft Lavender color
         elevation: 0, // No elevation for the app bar
         actions: [
@@ -62,7 +63,7 @@ class MeetTheTeamPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle, // Circular shape for the logo
                   image: DecorationImage(
-                    image: AssetImage('assets/ourLogo.png'), // Replace with app logo
+                    image: AssetImage('assets/ourLogo.png'),
                     fit: BoxFit.cover, // Ensure the image covers the circle
                   ),
                 ),
@@ -75,7 +76,7 @@ class MeetTheTeamPage extends StatelessWidget {
                 'We are the team behind the Wallet Watch app, a finance tracker designed to help you manage your expenses and savings. Our goal was to create an easy-to-use tool that helps users track their financial activities and make informed decisions. The app allows users to track their expenses, income, and set budgets. It also provides useful insights through graphs and financial tips.',
                 style: TextStyle(
                   fontSize: 16, // Font size of the description
-                  color: Color(0xFF4F6F7A), // Muted dark teal text color
+                  color: Color(0xFF003366), // Muted dark teal text color
                   height: 1.5, // Line height for readability
                 ),
                 textAlign: TextAlign.center, // Center align the text
@@ -86,7 +87,7 @@ class MeetTheTeamPage extends StatelessWidget {
               // Build the card for the first team member
               _buildTeamMemberCard(
                 name: 'Nainika Agrawal',
-                imagePath: 'assets/member1.jpg', // Replace with actual image path
+                imagePath: 'assets/member1.png', // Replace with actual image path
               ),
 
               const SizedBox(height: 40), // Spacing between the first and second team member cards
@@ -94,7 +95,7 @@ class MeetTheTeamPage extends StatelessWidget {
               // Build the card for the second team member
               _buildTeamMemberCard(
                 name: 'Kavya Gupta',
-                imagePath: 'assets/member2.jpg', // Replace with actual image path
+                imagePath: 'assets/member2.png', // Replace with actual image path
               ),
             ],
           ),
@@ -107,7 +108,8 @@ class MeetTheTeamPage extends StatelessWidget {
   Widget _buildTeamMemberCard({
     required String name,
     required String imagePath,
-  }) {
+  })
+  {
     return Card(
       elevation: 15, // Shadow elevation for the card
       shape: RoundedRectangleBorder(
@@ -124,7 +126,7 @@ class MeetTheTeamPage extends StatelessWidget {
             // Circle avatar for the team member's image
             CircleAvatar(
               radius: 60, // Uniform size for both avatars
-              backgroundImage: AssetImage(imagePath), // Image of the team member
+              foregroundImage: AssetImage(imagePath), // Image of the team member
             ),
 
             const SizedBox(width: 20), // Spacing between avatar and name

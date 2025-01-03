@@ -59,7 +59,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
           double transactionAmount = double.tryParse(subscriptionData['amount'].toString()) ?? 0.0; // Safely parse to double
 
           totalMoney -= transactionAmount;
-          // Update the totalMoney field in Firestore
+
           // Update the totalMoney field in Firestore
           await docRef.update({'totalMoney': totalMoney}); // Use DocumentReference to update
           print("Total money after update: $totalMoney");
@@ -115,7 +115,7 @@ class _AddsubscriptionsState extends State<Addsubscriptions> {
           ),),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color(0xFFA2D2FF),
+        backgroundColor: Color(0xFFD1A7D1),
       ),
       body: Container(
         decoration: const BoxDecoration(
