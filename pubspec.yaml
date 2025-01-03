@@ -72,8 +72,8 @@ flutter:
 
   assets:
     - assets/ourLogo.png
-    - assets/member1.png
-    - assets/member2.png
+    - assets/member1.jpg
+    - assets/member2.jpg
 
 
 

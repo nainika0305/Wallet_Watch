@@ -87,7 +87,7 @@ class MeetTheTeamPage extends StatelessWidget {
               // Build the card for the first team member
               _buildTeamMemberCard(
                 name: 'Nainika Agrawal',
-                imagePath: 'assets/member1.png', // Replace with actual image path
+                imagePath: 'assets/member1.jpg', // Replace with actual image path
               ),
 
               const SizedBox(height: 40), // Spacing between the first and second team member cards
@@ -95,7 +95,7 @@ class MeetTheTeamPage extends StatelessWidget {
               // Build the card for the second team member
               _buildTeamMemberCard(
                 name: 'Kavya Gupta',
-                imagePath: 'assets/member2.png', // Replace with actual image path
+                imagePath: 'assets/member2.jpg', // Replace with actual image path
               ),
             ],
           ),
